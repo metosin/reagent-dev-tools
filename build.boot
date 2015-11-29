@@ -21,7 +21,7 @@
   '[adzerk.boot-reload    :refer [reload]]
   '[pandeiro.boot-http    :refer [serve]])
 
-(def +version+ "0.1.0-SNAPSHOT")
+(def +version+ "0.1.0")
 
 (task-options!
   pom {:project 'metosin/reagent-dev-tools
