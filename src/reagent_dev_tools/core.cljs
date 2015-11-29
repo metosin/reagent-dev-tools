@@ -1,12 +1,12 @@
 (ns reagent-dev-tools.core
-  (:require [reagent.core :as reagent :refer [atom]]
+  (:require [reagent.core :as r]
             [reagent-dev-tools.styles :as s]
             [reagent-dev-tools.state-tree :refer [state-tree-panel]]))
 
 (defonce dev-state (r/atom {:height 300}))
 
 (def default-panels
-  {:state-tree {:name "State"
+  {:state-tree {:label "State"
                 :fn state-tree-panel}})
 
 (defn dev-tool
@@ -19,24 +19,26 @@
       [:div {:style (merge
                       s/panel-style
                       {:height (str (:height @dev-state) "px")})}
-       [:ul {:style s/nav-style}
-        (for [[k {:keys [label]}] panels]
-          [:li
-           {:key (name k)
-            :style s/nav-li-style}
-           [:a {:style (merge
-                         s/nav-li-a-style
-                         (if (keyword-identical? current-k k) s/active))
-                :on-click #(swap! dev-state assoc :current k)}
-            label]])
-        [:li {:style s/pull-right}
-         [:button
-          {:on-click (fn []
-                       (swap! dev-state assoc :open? false)
-                       nil)}
-          [:span "×"]]]]
+       [:div {:style s/nav-style}
+        [:div
+         {:style {:flex 1}}
+         (for [[k {:keys [label]}] panels]
+           [:div
+            {:key (name k)
+             :style s/nav-li-style}
+            [:a {:style (merge
+                          s/nav-li-a-style
+                          (if (keyword-identical? current-k k) s/active))
+                 :on-click #(swap! dev-state assoc :current k)}
+             label]])]
+        [:button
+         {:style s/nav-li-a-style
+          :on-click (fn []
+                      (swap! dev-state assoc :open? false)
+                      nil)}
+         [:span "×"]]]
        [:div
-        {:style s/content-style}
+        ; {:style s/content-style}
         (if current-content [current-content])]])
     [:button
      {:onClick (fn [_]

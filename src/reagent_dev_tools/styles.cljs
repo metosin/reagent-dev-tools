@@ -14,10 +14,10 @@
    :border-spacing 0})
 
 (def nav-style
-  {:list-style "none"
-   :padding "0 0 0 15px"
+  {:padding "0 0 0 15px"
    :margin 0
-   :border-bottom "1px solid #ccc"})
+   :border-bottom "1px solid #ccc"
+   :display "flex"})
 
 (def nav-li-style
   {:margin-bottom "-1px"})
@@ -51,7 +51,12 @@
   {:float "right"})
 
 (def toggle-btn-style
-  {:position "fixed"
-   :bottom 0
-   :right 0
-   :z-index 2000})
+  (merge
+    nav-li-a-style
+    {:position "fixed"
+     :bottom 0
+     :right 0
+     :z-index 2000}))
+
+(def panel-content
+  {:padding "10px"})

@@ -46,11 +46,12 @@
     :default    [:span (pr-str v)]))
 
 (defn state-tree-panel []
-  [:ul
+  [:div
+   {:style s/panel-content}
    (doall
      (for [[name {:keys [atom open]}] @state-tree]
-       [:li {:key name}
-        name
+       [:div {:key name}
+        [:strong name]
         [tree
          open
          (fn [ks]
