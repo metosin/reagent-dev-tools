@@ -1,4 +1,4 @@
-(defproject metosin/reagent-dev-tools "0.1.0-SNAPSHOT"
+(defproject metosin/reagent-dev-tools "0.1.1-SNAPSHOT"
   :description "Reagent dev tools"
   :url "https://github.com/metosin/reagent-dev-tools"
   :license {:name "Eclipse Public License"
