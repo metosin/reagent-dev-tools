@@ -5,6 +5,7 @@
    :width "100%"
    :position "fixed"
    :background "#fff"
+   :text-align "left"
    :bottom 0
    :height "30vh"
    :overflow-y "scroll"})
