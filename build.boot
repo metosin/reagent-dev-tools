@@ -3,13 +3,13 @@
   :resource-paths #{"src"}
   :dependencies '[[org.clojure/clojure    "1.7.0"      :scope "provided"]
                   [org.clojure/clojurescript "1.7.170" :scope "provided"]
-                  [boot/core              "2.4.2"      :scope "test"]
+                  [boot/core              "2.6.0"      :scope "test"]
                   [adzerk/boot-cljs       "1.7.170-3"  :scope "test"]
                   [adzerk/boot-cljs-repl  "0.3.0"      :scope "test"]
                   [com.cemerick/piggieback "0.2.1"     :scope "test"]
                   [weasel                  "0.7.0"     :scope "test"]
                   [org.clojure/tools.nrepl "0.2.12"    :scope "test"]
-                  [adzerk/boot-reload     "0.4.2"      :scope "test"]
+                  [adzerk/boot-reload     "0.4.13"     :scope "test"]
                   [pandeiro/boot-http     "0.7.0"      :scope "test"]
                   [devcards               "0.2.0-8"    :scope "test"]
 
