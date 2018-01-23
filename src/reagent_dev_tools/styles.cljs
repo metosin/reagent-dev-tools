@@ -72,4 +72,5 @@
 (def sizer
   {:background "#888"
    :height "5px"
-   :cursor "ns-resize"})
+   :cursor "ns-resize"
+   :flex "0 0 auto"})

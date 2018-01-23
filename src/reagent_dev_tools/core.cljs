@@ -1,13 +1,14 @@
 (ns reagent-dev-tools.core
   (:require [reagent.core :as r]
             [reagent-dev-tools.styles :as s]
-            [reagent-dev-tools.state-tree :refer [state-tree-panel]]
+            [reagent-dev-tools.state-tree :as state-tree]
             [komponentit.mixins :as mixins]
             [cljs.reader :as reader]))
 
 ;; Save the state (open, height, active panel) to local storage
 
 (def storage-key (str ::state))
+(def element-id (str ::dev-panel))
 
 (defonce dev-state (doto (r/atom (merge {:height 300}
                                         (try
@@ -20,7 +21,7 @@
 
 (def default-panels
   {:state-tree {:label "State"
-                :fn state-tree-panel}})
+                :fn state-tree/state-tree-panel}})
 
 (defn dev-tool
   [{:keys [panels]
@@ -74,3 +75,33 @@
                  nil)
       :style (merge s/pull-right s/toggle-btn-style)}
      "dev"]))
+
+(defn start!
+  "Start Reagent dev tool.
+
+  Options:
+
+  :el (optional) The element to render the dev-tool into. If the property is given,
+  but is nil, dev tool is not enabled. If not given, new div is created and
+  used.
+
+  :state-atom (optional) The Reagent atom to add to state-tree panel with \"App state\" name.
+
+  :panels-fn (optional) Function which returns map of additional panels to display."
+  [opts]
+  (when-let [el (if (contains? opts :el)
+                  (:el opts)
+                  (or (.getElementById js/document element-id)
+                      (let [el (.createElement js/document "div")]
+                        (set! (.-id el) element-id)
+                        (.appendChild (.-body js/document) el)
+                        el)))]
+
+    (when (:state-atom opts)
+      (state-tree/register-state-atom "App state" (:state-atom opts)))
+
+    (r/render
+      [dev-tool {:panels (merge default-panels
+                               (if (:panels-fn opts)
+                                 ((:panels-fn opts))))}]
+      el)))

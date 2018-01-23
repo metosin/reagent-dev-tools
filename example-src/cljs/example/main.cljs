@@ -9,24 +9,20 @@
                           :items [{:id "1" :name "a"}
                                   {:id "2" :name "b"}]}}))
 
-(dev-state/register-state-atom "App" state)
-
 (def users (r/atom [{:id "1" :name "a"}
                     {:id "2" :name "b"}]))
 
 (dev-state/register-state-atom "Users" users)
 
-
 (defcard-rg foo
   [:h1 "hello"])
 
+(defn dev-panels []
+  {:example {:label "Example panel"
+             :fn (fn []
+                   [:div [:h1 "Hello"]])}})
+
 (defn restart! []
-  (dc/start-devcard-ui!)
-  (r/render
-    [dev-tools/dev-tool {:panels (merge dev-tools/default-panels
-                                        {:example {:label "Example panel"
-                                                   :fn (fn []
-                                                         [:div [:h1 "Hello"]])}})}]
-    (.getElementById js/document "dev")))
+  (dc/start-devcard-ui!))
 
 (restart!)
