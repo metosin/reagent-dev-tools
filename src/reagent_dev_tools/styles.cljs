@@ -7,32 +7,38 @@
    :background "#fff"
    :text-align "left"
    :bottom 0
-   :height "30vh"
-   :overflow-y "scroll"})
+   :display "flex"
+   :flex-direction "column"})
 
 (def table-style
   {:border-collapse "collapse"
    :border-spacing 0})
 
 (def nav-style
-  {:padding "0 0 0 15px"
+  {:padding "5px 0 0 10px"
    :margin 0
    :border-bottom "1px solid #ccc"
-   :display "flex"})
+   :display "flex"
+   :background "#eee"
+   :flex "0 0 auto"})
 
 (def nav-li-style
-  {:margin-bottom "-1px"})
+  {:margin-bottom "-1px"
+   :margin-right "10px"})
 
 (def nav-li-a-style
   {:display "inline-block"
    :padding "10px"
    :cursor "pointer"
-   :background "#fff"
+   :background "#eee"
+   :color "#666"
    :border "1px solid #ccc"
-   :border-bottom-color "transparent"})
+   :border-bottom-color "#ccc"})
 
 (def active
-  {:background "#D2DDFF"})
+  {:background "#fff"
+   :color "#333"
+   :border-bottom-color "#fff"})
 
 (def td-style
   {:padding 0})
@@ -60,4 +66,11 @@
      :z-index 2000}))
 
 (def panel-content
-  {:padding "10px"})
+  {:padding "10px"
+   :overflow-y "auto"})
+
+(def sizer
+  {:background "#888"
+   :height "5px"
+   :cursor "ns-resize"
+   :flex "0 0 auto"})
