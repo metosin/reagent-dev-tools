@@ -40,12 +40,6 @@
     (cljs)
     (serve :port 3002)))
 
-(deftask build-example []
-  (comp
-    (cljs :optimizations :advanced)
-    (sift :to-resource #{#"^index\.html"})
-    (sift :include #{#"^(main.js|example.css|index.html)"})))
-
 (deftask build []
   (comp
     (pom)
@@ -56,5 +50,4 @@
   (comp
     (build)
     (push :gpg-sign (not (.endsWith +version+ "-SNAPSHOT"))
-          :repo "clojars"
-          :repo-map {:username :gpg :password :gpg})))
+          :repo "clojars")))
