@@ -19,11 +19,11 @@ To configure dev tool in this setup, one can use `:external-config :reagent-dev-
 
 ```edn
 :external-config {:reagent-dev-tools {:state-atom example.main/state
-                                      :panels example.main/dev-panels}}}}
+                                      :panels-fn example.main/dev-panels}}}}
 ```
 
 - `:state-atom` should refer to the var which is the Reagent state atom
-- `:panels` should refer to function which will return map of additional panels
+- `:panels-fn` should refer to function which will return map of additional panels
 
 ### Manual use
 
@@ -35,6 +35,6 @@ as part of Reagent applications.
 
 ## License
 
-Copyright © 2015 [Metosin Oy](http://www.metosin.fi)
+Copyright © 2015-2018 [Metosin Oy](http://www.metosin.fi)
 
 Distributed under the Eclipse Public License, the same as Clojure.
