@@ -7,7 +7,6 @@
    :background "#fff"
    :text-align "left"
    :bottom 0
-   :height "30vh"
    :display "flex"
    :flex-direction "column"})
 
@@ -69,3 +68,8 @@
 (def panel-content
   {:padding "10px"
    :overflow-y "auto"})
+
+(def sizer
+  {:background "#888"
+   :height "5px"
+   :cursor "ns-resize"})
