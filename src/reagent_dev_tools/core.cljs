@@ -20,25 +20,24 @@
                       s/panel-style
                       {:height (str (:height @dev-state) "px")})}
        [:div {:style s/nav-style}
-        [:div
-         {:style {:flex 1}}
-         (for [[k {:keys [label]}] panels]
-           [:div
-            {:key (name k)
-             :style s/nav-li-style}
-            [:a {:style (merge
-                          s/nav-li-a-style
-                          (if (keyword-identical? current-k k) s/active))
-                 :on-click #(swap! dev-state assoc :current k)}
-             label]])]
+        (for [[k {:keys [label]}] panels]
+          [:div
+           {:key (name k)
+            :style s/nav-li-style}
+           [:a {:style (merge
+                         s/nav-li-a-style
+                         (if (keyword-identical? current-k k) s/active))
+                :on-click #(swap! dev-state assoc :current k)}
+            label]])
+        [:div {:style {:flex "1 0 0%"}}]
         [:button
-         {:style s/nav-li-a-style
+         {:style (assoc s/nav-li-a-style :background "#fff")
           :on-click (fn []
                       (swap! dev-state assoc :open? false)
                       nil)}
          [:span "×"]]]
        [:div
-        ; {:style s/content-style}
+        {:style s/panel-content}
         (if current-content [current-content])]])
     [:button
      {:onClick (fn [_]

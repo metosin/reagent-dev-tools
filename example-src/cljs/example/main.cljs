@@ -22,6 +22,11 @@
 
 (defn restart! []
   (dc/start-devcard-ui!)
-  (r/render [dev-tools/dev-tool {}] (js/document.getElementById "dev")))
+  (r/render
+    [dev-tools/dev-tool {:panels (merge dev-tools/default-panels
+                                        {:example {:label "Example panel"
+                                                   :fn (fn []
+                                                         [:div [:h1 "Hello"]])}})}]
+    (.getElementById js/document "dev")))
 
 (restart!)

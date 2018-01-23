@@ -47,7 +47,6 @@
 
 (defn state-tree-panel []
   [:div
-   {:style s/panel-content}
    (doall
      (for [[name {:keys [atom open]}] @state-tree]
        [:div {:key name}
