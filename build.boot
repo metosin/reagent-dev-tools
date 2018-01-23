@@ -1,25 +1,25 @@
 (set-env!
   :source-paths #{"example-src/cljs" "example-src/html"}
   :resource-paths #{"src"}
-  :dependencies '[[org.clojure/clojure    "1.7.0"      :scope "provided"]
-                  [org.clojure/clojurescript "1.7.170" :scope "provided"]
-                  [boot/core              "2.6.0"      :scope "test"]
-                  [adzerk/boot-cljs       "1.7.170-3"  :scope "test"]
-                  [adzerk/boot-cljs-repl  "0.3.0"      :scope "test"]
-                  [com.cemerick/piggieback "0.2.1"     :scope "test"]
+  :dependencies '[[org.clojure/clojure    "1.9.0"      :scope "provided"]
+                  [org.clojure/clojurescript "1.9.946" :scope "provided"]
+                  [adzerk/boot-cljs       "2.1.4"  :scope "test"]
+                  [adzerk/boot-cljs-repl  "0.3.3"      :scope "test"]
+                  [com.cemerick/piggieback "0.2.2"     :scope "test"]
                   [weasel                  "0.7.0"     :scope "test"]
-                  [org.clojure/tools.nrepl "0.2.12"    :scope "test"]
-                  [adzerk/boot-reload     "0.4.13"     :scope "test"]
-                  [pandeiro/boot-http     "0.7.0"      :scope "test"]
-                  [devcards               "0.2.0-8"    :scope "test"]
+                  [org.clojure/tools.nrepl "0.2.13"    :scope "test"]
+                  [adzerk/boot-reload     "0.5.2"     :scope "test"]
+                  [devcards               "0.2.4" :scope "test"
+                   :exclusions [cljsjs/react cljsjs/react-dom]]
+                  [metosin/boot-alt-http "0.2.0" :scope "test"]
 
-                  [reagent "0.5.1"]])
+                  [reagent "0.8.0-alpha2"]])
 
 (require
   '[adzerk.boot-cljs      :refer [cljs]]
   '[adzerk.boot-cljs-repl :refer [cljs-repl start-repl repl-env]]
   '[adzerk.boot-reload    :refer [reload]]
-  '[pandeiro.boot-http    :refer [serve]])
+  '[metosin.boot-alt-http :refer [serve]])
 
 (def +version+ "0.1.1-SNAPSHOT")
 
@@ -33,10 +33,11 @@
 (deftask dev []
   (comp
     (watch)
-    (reload :on-jsload 'example.main/restart!)
+    (reload :on-jsload 'example.main/restart!
+            :asset-path "public")
     (cljs-repl)
     (cljs)
-    (serve :port 3002 :resource-root "")))
+    (serve :port 3002)))
 
 (deftask build-example []
   (comp

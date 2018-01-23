@@ -1,3 +1,0 @@
-{:require [example.main]
- :compiler-options {:asset-path "main.out"
-                    :devcards true}}
