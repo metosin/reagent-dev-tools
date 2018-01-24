@@ -18,6 +18,12 @@
                  n)))
     k))
 
+(defn type->class [v]
+  (cond
+    (keyword? v) "reagent-dev-tools__keyword"
+    (string? v) "reagent-dev-tools__string"
+    (number? v) "reagent-dev-tools__number"))
+
 (defn- tree [open open-fn v ks]
   (cond
     (coll? v)
@@ -28,21 +34,27 @@
            :let [ks (conj ks k)]]
        [:li.reagent-dev-tools__li
         {:key (key->string k)}
-        [:span
+        [:span.reagent-dev-tools__li-toggle
          {:on-click #(open-fn ks)
-          :style {:cursor "pointer"}}
-         [:span {:style {:display "inline-block"}}
-          (if (coll? v)
-            (if (get-in open ks) "-" "+"))]
-         [:strong (key->string k)]
-         ": "]
+          :class (if (coll? v)
+                   "reagent-dev-tools__li-toggle--active")}
+         (if (coll? v)
+           [:span.reagent-dev-tools__li-toggle-icon
+            (if (get-in open ks) "-" "+")])
+         [:strong
+          {:class (type->class k)}
+          (key->string k)]
+         " "]
         (if (or (not (coll? v)) (get-in open ks))
           [tree open open-fn v ks])])]
 
-    (string? v) [:pre.reagent-dev-tools__pre "\"" v "\""]
+    (string? v) [:pre.reagent-dev-tools__pre.reagent-dev-tools__string
+                 "\"" v "\""]
     (nil? v)    [:i "nil"]
     (fn? v)     [:span "function"]
-    :default    [:span (pr-str v)]))
+    :default    [:span
+                 {:class (type->class v)}
+                 (pr-str v)]))
 
 (defn state-tree-panel []
   [:div

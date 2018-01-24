@@ -1,4 +1,7 @@
 .reagent-dev-tools__panel {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, Roboto, 'Helvetica Neue', sans-serif;
+  font-size: 16px;
+
   z-index: 2000;
   width: 100%;
   position: fixed;
@@ -38,6 +41,10 @@
   border-bottom-color: #ccc;
 }
 
+.reagent-dev-tools__nav-li-a:hover {
+  background: #BDF;
+}
+
 .reagent-dev-tools__nav-li-a--active {
   background: #fff;
   color: #333;
@@ -57,6 +64,7 @@
 }
 
 .reagent-dev-tools__pre {
+  font-family: 'SFMono-Regular', 'Ubuntu Mono', Consolas, 'DejaVu Sans Mono', Menlo, monospace;
   display: inline;
   background: none;
   border: 0;
@@ -67,6 +75,22 @@
   padding-left: 1em;
   text-indent: -1em;
   list-style: none;
+}
+
+.reagent-dev-tools__li-toggle {
+  padding: 2px 6px;
+}
+
+.reagent-dev-tools__li-toggle--active {
+  cursor: pointer;
+}
+
+.reagent-dev-tools__li-toggle--active:hover {
+  background: #BDF;
+}
+
+.reagent-dev-tools__li-toggle-icon {
+  display: inline-block;
 }
 
 .reagent-dev-tools__pull-right {
@@ -91,4 +115,20 @@
   height: 5px;
   cursor: ns-resize;
   flex: 0 0 auto;
+}
+
+.reagent-dev-tools__sizer:hover {
+  background: #79D
+}
+
+.reagent-dev-tools__keyword {
+  color: #6f42c1;
+}
+
+.reagent-dev-tools__string {
+  color: #032f62;
+}
+
+.reagent-dev-tools__number {
+  color: #005cc5;
 }
