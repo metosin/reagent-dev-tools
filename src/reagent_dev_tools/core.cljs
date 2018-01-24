@@ -42,38 +42,31 @@
                                               s))))
         :on-mouse-up (fn [e]
                        (swap! dev-state dissoc :mouse))}
-       [:div {:style (merge
-                       s/panel-style
-                       {:height (str (:height @dev-state) "px")})}
-        [:div {:style s/sizer
-               :on-mouse-down (fn [e]
-                                (swap! dev-state assoc :mouse true)
-                                (.preventDefault e))}]
-        [:div {:style s/nav-style}
+       [:div.reagent-dev-tools__panel
+        {:style {:height (str (:height @dev-state) "px")}}
+        [:style {:dangerouslySetInnerHTML #js {:__html (s/main-css)}}]
+        [:div.reagent-dev-tools__sizer
+         {:on-mouse-down (fn [e]
+                           (swap! dev-state assoc :mouse true)
+                           (.preventDefault e))}]
+        [:div.reagent-dev-tools__nav
          (for [[k {:keys [label]}] panels]
-           [:div
-            {:key (name k)
-             :style s/nav-li-style}
-            [:a {:style (merge
-                          s/nav-li-a-style
-                          (if (keyword-identical? current-k k) s/active))
-                 :on-click #(swap! dev-state assoc :current k)}
+           [:div.reagent-dev-tools__nav-li
+            {:key (name k)}
+            [:a.reagent-dev-tools__nav-li-a
+             {:class (if (keyword-identical? current-k k) "reagent-dev-tools__nav-li-a--active")
+              :on-click #(swap! dev-state assoc :current k)}
              label]])
-         [:div {:style {:flex "1 0 0%"}}]
-        [:button
-         {:style (assoc s/nav-li-a-style :background "#fff")
-          :on-click (fn []
-                      (swap! dev-state assoc :open? false)
-                      nil)}
-         [:span "×"]]]
-       [:div
-        {:style s/panel-content}
-        (if current-content [current-content])]]])
-    [:button
-     {:onClick (fn [_]
-                 (swap! dev-state assoc :open? true)
-                 nil)
-      :style (merge s/pull-right s/toggle-btn-style)}
+         [:div.reagent-dev-tools__spacer]
+         [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__nav-li-a--close-button
+          {:on-click #(swap! dev-state assoc :open? false)}
+          [:span "×"]]]
+        [:div.reagent-dev-tools__panel-content
+         (if current-content [current-content])]]])
+    [:button.reagent-dev-tools__pull-right.reagent-dev-tools__toggle-btn
+     {:on-click (fn [_]
+                  (swap! dev-state assoc :open? true)
+                  nil)}
      "dev"]))
 
 (defn start!

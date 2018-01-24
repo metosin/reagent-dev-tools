@@ -26,9 +26,8 @@
                    v
                    (zipmap (range) v))
            :let [ks (conj ks k)]]
-       [:li
-        {:key (key->string k)
-         :style s/li-style}
+       [:li.reagent-dev-tools__li
+        {:key (key->string k)}
         [:span
          {:on-click #(open-fn ks)
           :style {:cursor "pointer"}}
@@ -40,7 +39,7 @@
         (if (or (not (coll? v)) (get-in open ks))
           [tree open open-fn v ks])])]
 
-    (string? v) [:pre {:style s/pre-style} "\"" v "\""]
+    (string? v) [:pre.reagent-dev-tools__pre "\"" v "\""]
     (nil? v)    [:i "nil"]
     (fn? v)     [:span "function"]
     :default    [:span (pr-str v)]))

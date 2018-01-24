@@ -10,7 +10,7 @@
 
 (defn start []
   (let [opts (read-config)]
-      (core/start! opts)))
+    (core/start! opts)))
 
 (if (#{"interactive" "complete"} (.. js/document -readyState))
   (start)
