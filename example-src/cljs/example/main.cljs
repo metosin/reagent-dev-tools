@@ -6,6 +6,10 @@
             [reagent-dev-tools.preload :as dev-tools-preload]))
 
 (def state (r/atom {:hello "world"
+                    :fn-test (fn foo-name [])
+                    :anon-fn #(constantly nil)
+                    :number 1337
+                    :kw :namespace/keyword
                     :foo {:bar "bar"
                           :items [{:id "1" :name "a"}
                                   {:id "2" :name "b"}]}}))
