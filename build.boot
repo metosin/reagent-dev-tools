@@ -14,7 +14,7 @@
                   [metosin/boot-alt-http "0.2.0" :scope "test"]
 
                   [reagent "0.8.0-alpha2"]
-                  [metosin/komponentit "0.3.2"]])
+                  [metosin/komponentit "0.3.3"]])
 
 (require
   '[adzerk.boot-cljs      :refer [cljs]]
