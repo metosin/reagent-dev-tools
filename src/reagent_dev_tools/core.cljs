@@ -26,48 +26,49 @@
 (defn dev-tool
   [{:keys [panels]
     :or {panels default-panels}}]
-  (if (:open? @dev-state)
-    (let [current-k       (:current @dev-state :state-tree)
-          current-panel   (or (get panels current-k) (:state-tree panels))
-          current-content (:fn current-panel)]
-      [mixins/window-event-listener
-       {:on-mouse-move (fn [e]
-                         (swap! dev-state (fn [s]
-                                            (if (:mouse s)
-                                              (do
-                                                (.preventDefault e)
-                                                (assoc s :height (-> (- (.-innerHeight js/window) (.-clientY e))
-                                                                     (max 50)
-                                                                     (min 1000))))
-                                              s))))
-        :on-mouse-up (fn [e]
-                       (swap! dev-state dissoc :mouse))}
-       [:div.reagent-dev-tools__panel
-        {:style {:height (str (:height @dev-state) "px")}}
-        [:style {:dangerouslySetInnerHTML #js {:__html (s/main-css)}}]
-        [:div.reagent-dev-tools__sizer
-         {:on-mouse-down (fn [e]
-                           (swap! dev-state assoc :mouse true)
-                           (.preventDefault e))}]
-        [:div.reagent-dev-tools__nav
-         (for [[k {:keys [label]}] panels]
-           [:div.reagent-dev-tools__nav-li
-            {:key (name k)}
-            [:a.reagent-dev-tools__nav-li-a
-             {:class (if (keyword-identical? current-k k) "reagent-dev-tools__nav-li-a--active")
-              :on-click #(swap! dev-state assoc :current k)}
-             label]])
-         [:div.reagent-dev-tools__spacer]
-         [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__nav-li-a--close-button
-          {:on-click #(swap! dev-state assoc :open? false)}
-          [:span "×"]]]
-        [:div.reagent-dev-tools__panel-content
-         (if current-content [current-content])]]])
-    [:button.reagent-dev-tools__pull-right.reagent-dev-tools__toggle-btn
-     {:on-click (fn [_]
-                  (swap! dev-state assoc :open? true)
-                  nil)}
-     "dev"]))
+  [:div
+   [:style (s/main-css)]
+   (if (:open? @dev-state)
+     (let [current-k       (:current @dev-state :state-tree)
+           current-panel   (or (get panels current-k) (:state-tree panels))
+           current-content (:fn current-panel)]
+       [mixins/window-event-listener
+        {:on-mouse-move (fn [e]
+                          (swap! dev-state (fn [s]
+                                             (if (:mouse s)
+                                               (do
+                                                 (.preventDefault e)
+                                                 (assoc s :height (-> (- (.-innerHeight js/window) (.-clientY e))
+                                                                      (max 50)
+                                                                      (min 1000))))
+                                               s))))
+         :on-mouse-up (fn [e]
+                        (swap! dev-state dissoc :mouse))}
+        [:div.reagent-dev-tools__panel
+         {:style {:height (str (:height @dev-state) "px")}}
+         [:div.reagent-dev-tools__sizer
+          {:on-mouse-down (fn [e]
+                            (swap! dev-state assoc :mouse true)
+                            (.preventDefault e))}]
+         [:div.reagent-dev-tools__nav
+          (for [[k {:keys [label]}] panels]
+            [:div.reagent-dev-tools__nav-li
+             {:key (name k)}
+             [:a.reagent-dev-tools__nav-li-a
+              {:class (if (keyword-identical? current-k k) "reagent-dev-tools__nav-li-a--active")
+               :on-click #(swap! dev-state assoc :current k)}
+              label]])
+          [:div.reagent-dev-tools__spacer]
+          [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__nav-li-a--close-button
+           {:on-click #(swap! dev-state assoc :open? false)}
+           [:span "×"]]]
+         [:div.reagent-dev-tools__panel-content
+          (if current-content [current-content])]]])
+     [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__toggle-btn
+      {:on-click (fn [_]
+                   (swap! dev-state assoc :open? true)
+                   nil)}
+      "dev"])])
 
 (defn start!
   "Start Reagent dev tool.
