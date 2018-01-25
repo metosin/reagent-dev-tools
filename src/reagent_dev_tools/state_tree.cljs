@@ -32,24 +32,27 @@
      (for [[k v] (if (map? v)
                    v
                    (zipmap (range) v))
-           :let [ks (conj ks k)]]
+           :let [open (get open k)
+                 ks (conj ks k)]]
        [:li.reagent-dev-tools__li
         {:key (key->string k)}
         [:span.reagent-dev-tools__li-toggle
          {:on-click #(open-fn ks false)
+          :title "Toggle this collection"
           :class (if (coll? v)
                    "reagent-dev-tools__li-toggle--active")}
          (if (coll? v)
            [:span.reagent-dev-tools__li-toggle-icon
-            (if (get-in open ks) "-" "+")])
+            (if open "-" "+")])
          [:strong
           {:class (type->class k)}
           (key->string k)]
 
          " "]
         [:span.reagent-dev-tools__li-toggle.reagent-dev-tools__li-toggle--active.reagent-dev-tools__pre
-         {:on-click (fn [_]
-                      (let [open-all? (some nil? (vals (get-in open ks)))]
+         {:title "Toggle collection items"
+          :on-click (fn [_]
+                      (let [open-all? (some nil? (vals open))]
                         (doseq [[k _] (if (map? v)
                                         v
                                         (zipmap (range) v))]
@@ -60,7 +63,7 @@
              (vector? v) "[]"
              (set? v) "#{}"
              (list? v) "()"))]
-        (if (or (not (coll? v)) (get-in open ks))
+        (if (or (not (coll? v)) open)
           [tree open open-fn v ks])])]
 
     (nil? v)     [:i "nil"]
