@@ -1,4 +1,4 @@
-# Unreleased
+# 0.2.0 (2018-01-25)
 
 - Made the panel resizeable
 - Save the state (open, height, active panel) on `localStorage`
