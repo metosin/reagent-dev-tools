@@ -25,6 +25,17 @@ To configure dev tool in this setup, one can use `:external-config :reagent-dev-
 - `:state-atom` should refer to the var which is the Reagent state atom
 - `:panels-fn` should refer to function which will return map of additional panels
 
+To make your own application to make room for the dev-tool, you can for
+example add some padding to your app when the dev-tool is open:
+
+```cljs
+(defn main-view []
+  [:div.main-view
+   (if (:open? @dev-tools/dev-state)
+     {:style {:padding-bottom (str (:height @dev-tools/dev-state) "px")}})
+   ...])
+```
+
 ### Manual use
 
 If one wants to include Dev tool in production builds, `reagent-dev-tools.core/start!`
