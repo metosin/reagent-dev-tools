@@ -10,6 +10,7 @@
                     :anon-fn #(constantly nil)
                     :number 1337
                     :kw :namespace/keyword
+                    :nil nil
                     :foo {:bar "bar"
                           :items [{:id "1" :name "a"}
                                   {:id "2" :name "b"}]}}))

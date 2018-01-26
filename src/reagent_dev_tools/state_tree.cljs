@@ -24,11 +24,18 @@
   (cond
     (keyword? v) "reagent-dev-tools__keyword"
     (string? v) "reagent-dev-tools__string"
-    (number? v) "reagent-dev-tools__number"))
+    (number? v) "reagent-dev-tools__number"
+    (nil? v) "reagent-dev-tools__nil"))
+
+(defn collection-name [v]
+  (cond
+    (map? v) "{}"
+    (vector? v) "[]"
+    (set? v) "#{}"
+    (list? v) "()") )
 
 (defn- tree [open open-fn v ks]
-  (cond
-    (coll? v)
+  (if (coll? v)
     [:ul
      (for [[k v] (if (map? v)
                    v
@@ -50,40 +57,37 @@
           (key->string k)]
 
          " "]
-        [:span.reagent-dev-tools__li-toggle.reagent-dev-tools__li-toggle--active.reagent-dev-tools__pre
-         {:title "Toggle collection items"
-          :on-click (fn [_]
-                      (let [open-all? (some nil? (vals open))]
-                        (doseq [[k _] (if (map? v)
-                                        v
-                                        (zipmap (range) v))]
-                          (open-fn (conj ks k) open-all?))))}
-         (if (coll? v)
-           (cond
-             (map? v) "{}"
-             (vector? v) "[]"
-             (set? v) "#{}"
-             (list? v) "()"))]
+        (if (coll? v)
+          [:span.reagent-dev-tools__li-toggle.reagent-dev-tools__li-toggle--active.reagent-dev-tools__pre
+           {:title "Toggle collection items"
+            :on-click (fn [_]
+                        ;; if one is closed, open all
+                        ;; else close all
+                        (let [open-all? (some nil? (vals open))]
+                          (doseq [[k _] (if (map? v)
+                                          v
+                                          (zipmap (range) v))]
+                            (open-fn (conj ks k) open-all?))))}
+           (collection-name v)])
         (if (or (not (coll? v)) open)
           [tree open open-fn v ks])])]
 
-    (nil? v)     [:i "nil"]
-    :default     [:pre.reagent-dev-tools__pre
-                  {:class (type->class v)}
-                 (pr-str v)]))
+    [:pre.reagent-dev-tools__pre
+     {:class (type->class v)}
+     (pr-str v)]))
 
 (defn state-tree-panel []
   [:div
    (doall
-     (for [[name {:keys [atom open]}] @state-tree]
+     (for [[name {:keys [state-atom open]}] @state-tree]
        [:div {:key name}
         [:strong name]
         [tree
          open
          (fn [ks open?]
            (swap! state-tree update-in [name :open] toggle ks open?))
-         @atom
+         @state-atom
          []]]))])
 
-(defn register-state-atom [atom-name atom]
-  (swap! state-tree assoc-in [atom-name :atom] atom))
+(defn register-state-atom [atom-name state-atom]
+  (swap! state-tree assoc-in [atom-name :state-atom] state-atom))
