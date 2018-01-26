@@ -2,6 +2,7 @@
   (:require [reagent-dev-tools.styles :as s]
             [reagent.core :as r]))
 
+;; TODO: Move to panel state, so open is saved
 (defonce state-tree (r/atom {}))
 
 (defn- toggle [v ks open?]
