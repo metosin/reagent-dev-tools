@@ -13,8 +13,8 @@
                    :exclusions [cljsjs/react cljsjs/react-dom]]
                   [metosin/boot-alt-http "0.2.0" :scope "test"]
 
-                  [reagent "0.8.0-alpha2"]
-                  [metosin/komponentit "0.3.3"]])
+                  [reagent "0.9.1"]
+                  [metosin/komponentit "0.3.9"]])
 
 (require
   '[adzerk.boot-cljs      :refer [cljs]]
@@ -22,7 +22,7 @@
   '[adzerk.boot-reload    :refer [reload]]
   '[metosin.boot-alt-http :refer [serve]])
 
-(def +version+ "0.2.0")
+(def +version+ "0.2.1")
 
 (task-options!
   pom {:project 'metosin/reagent-dev-tools

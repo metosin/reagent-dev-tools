@@ -1,3 +1,8 @@
+# 0.2.1 (2020-03-06)
+
+- Use `reagent.dom/render` instead of `reagent.core/render` to prepare for
+next Reagent releases
+
 # 0.2.0 (2018-01-25)
 
 - Made the panel resizeable
