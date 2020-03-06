@@ -1,5 +1,6 @@
 (ns reagent-dev-tools.core
   (:require [reagent.core :as r]
+            [reagent.dom :as rdom]
             [reagent-dev-tools.styles :as s]
             [reagent-dev-tools.state-tree :as state-tree]
             [komponentit.mixins :as mixins]
@@ -94,7 +95,7 @@
     (when (:state-atom opts)
       (state-tree/register-state-atom "App state" (:state-atom opts)))
 
-    (r/render
+    (rdom/render
       [dev-tool {:panels (merge default-panels
                                (if (:panels-fn opts)
                                  ((:panels-fn opts))))}]
