@@ -13,7 +13,9 @@
                    :exclusions [cljsjs/react cljsjs/react-dom]]
                   [metosin/boot-alt-http "0.2.0" :scope "test"]
 
-                  [reagent "0.9.1"]
+                  ;; No need to depend on Reagent, it is presumed
+                  ;; the application provides it.
+                  [reagent "0.9.1" :scope "provided"]
                   [metosin/komponentit "0.3.9"]])
 
 (require

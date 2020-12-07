@@ -3,7 +3,7 @@
             [reagent-dev-tools.styles :as s]
             [reagent-dev-tools.state-tree :as state-tree]
             [reagent-dev-tools.state :as state]
-            [komponentit.mixins :as mixins]))
+            [reagent-dev-tools.utils :refer [window-event-listener]]))
 
 ;; Save the state (open, height, active panel) to local storage
 
@@ -33,7 +33,7 @@
          (let [current-k       (:current @dev-state :state-tree)
                current-panel   (or (get panels current-k) (:state-tree panels))
                current-content (:fn current-panel)]
-           [mixins/window-event-listener
+           [window-event-listener
             {:on-mouse-move (fn [e]
                               (when @mouse-state
                                 (.preventDefault e)
