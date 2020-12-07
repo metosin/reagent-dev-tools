@@ -117,7 +117,7 @@
   padding: 10px;
   overflow-y: auto;
   overflow-x: auto;
-  flex: 1 0 auto;
+  flex: 1 0 0%;
 }
 
 .reagent-dev-tools__sizer {

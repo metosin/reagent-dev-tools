@@ -77,7 +77,8 @@
                 {:style {:display "flex"
                          :flex-direction "column"
                          :flex "1 0 auto"
-                         :width "100%"}}
+                         :width "100%"
+                         :height "100%"}}
                 [:div.reagent-dev-tools__nav
                  (for [[k {:keys [label]}] panels]
                    [:div.reagent-dev-tools__nav-li
@@ -97,7 +98,8 @@
                   {:on-click #(swap! dev-state assoc :open? false)}
                   [:div.reagent-dev-tools__close-icon]]]
                 [:div.reagent-dev-tools__panel-content
-                 (when current-content [current-content])]]]])
+                 (when current-content
+                   [current-content])]]]])
            [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__toggle-btn
             {:on-click (fn [_]
                          (swap! dev-state assoc :open? true)
