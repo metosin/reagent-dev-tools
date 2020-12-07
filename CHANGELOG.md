@@ -1,6 +1,6 @@
-# Unreleased
+# 0.3.0 (2020-12-07)
 
-[compare](https://github.com/metosin/reagent-dev-tools/compare/0.2.1...master)
+[compare](https://github.com/metosin/reagent-dev-tools/compare/0.2.1...0.3.0)
 
 - Add option to toggle panel placement between bottom and right
 - Add `:margin-element` option to automatically set margin-bottom/right on some
