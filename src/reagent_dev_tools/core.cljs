@@ -32,8 +32,14 @@
   [{:keys [panels]
     :or {panels default-panels}}]
   (let [mouse-state (atom nil)]
-    (fn [{:keys [panels]
+    (fn [{:keys [panels margin-element]
           :or {panels default-panels}}]
+      (when margin-element
+        (set! (.. margin-element -style -marginRight) (when (and (:open? @dev-state) (= :right (:place @dev-state)))
+                                                        (str (:width @dev-state) "px")))
+
+        (set! (.. margin-element -style -marginBottom) (when (and (:open? @dev-state) (= :bottom (:place @dev-state)))
+                                                         (str (:height @dev-state) "px"))))
       [:<>
        [:style (s/main-css)]
        (if (:open? @dev-state)
@@ -116,7 +122,9 @@
 
   :state-atom (optional) The Reagent atom to add to state-tree panel with \"App state\" name.
 
-  :panels-fn (optional) Function which returns map of additional panels to display."
+  :panels-fn (optional) Function which returns map of additional panels to display.
+
+  :margin-element (optional) Element where to set margin-bottom/right if the panel is open."
   [opts]
   (when-let [el (if (contains? opts :el)
                   (:el opts)
@@ -130,7 +138,8 @@
       (state-tree/register-state-atom "App state" (:state-atom opts)))
 
     (rdom/render
-      [dev-tool {:panels (merge default-panels
+      [dev-tool {:margin-element (:margin-element opts)
+                 :panels (merge default-panels
                                 (when (:panels-fn opts)
                                   ((:panels-fn opts))))}]
       el)))

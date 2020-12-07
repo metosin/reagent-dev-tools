@@ -2,8 +2,7 @@
   (:require [devcards.core :as dc :refer-macros [defcard defcard-rg deftest]]
             [reagent.core :as r]
             [reagent-dev-tools.core :as dev-tools]
-            [reagent-dev-tools.state-tree :as dev-state]
-            [reagent-dev-tools.preload :as dev-tools-preload]))
+            [reagent-dev-tools.state-tree :as dev-state]))
 
 (def state (r/atom {:hello "world"
                     :fn-test (fn foo-name [])
@@ -30,6 +29,6 @@
 
 (defn restart! []
   (dc/start-devcard-ui!)
-  (dev-tools-preload/start))
+  (dev-tools/start! {:margin-element js/document.body}))
 
 (restart!)
