@@ -1,32 +1,19 @@
 (ns reagent-dev-tools.core
-  (:require [reagent.core :as r]
-            [reagent.dom :as rdom]
+  (:require [reagent.dom :as rdom]
             [reagent-dev-tools.styles :as s]
             [reagent-dev-tools.state-tree :as state-tree]
-            [komponentit.mixins :as mixins]
-            [cljs.reader :as reader]))
+            [reagent-dev-tools.state :as state]
+            [komponentit.mixins :as mixins]))
 
 ;; Save the state (open, height, active panel) to local storage
 
-(def storage-key (str ::state))
 (def element-id (str ::dev-panel))
-
-(defonce dev-state
-  (r/atom (merge {:height 300
-                  :width 300}
-                 (try
-                   (reader/read-string (.getItem js/localStorage storage-key))
-                   (catch :default _
-                     nil)))))
-
-(add-watch dev-state :local-storage
-           (fn [_ _ _old v]
-             (js/console.log "store to local storage")
-             (.setItem js/localStorage storage-key (pr-str (dissoc v :mouse)))))
 
 (def default-panels
   {:state-tree {:label "State"
                 :fn state-tree/state-tree-panel}})
+
+(def dev-state state/dev-state)
 
 (defn dev-tool
   [{:keys [panels]
@@ -143,3 +130,8 @@
                                 (when (:panels-fn opts)
                                   ((:panels-fn opts))))}]
       el)))
+
+(defn register-state-atom
+  "Add Reagent atom to the state panel with given name"
+  [atom-name state-atom]
+  (state-tree/register-state-atom atom-name state-atom))

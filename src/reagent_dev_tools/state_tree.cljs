@@ -1,9 +1,8 @@
 (ns reagent-dev-tools.state-tree
-  (:require [reagent-dev-tools.styles :as s]
-            [reagent.core :as r]))
+  (:require [reagent.core :as r]
+            [reagent-dev-tools.state :as state]))
 
-;; TODO: Move to panel state, so open is saved
-(defonce state-tree (r/atom {}))
+(defonce state-atoms (r/atom {}))
 
 (defn- toggle [v ks open?]
   (if (or (not (get-in v ks))
@@ -79,15 +78,16 @@
 (defn state-tree-panel []
   [:div
    (doall
-     (for [[name {:keys [state-atom open]}] @state-tree]
+     (for [[name state-atom] @state-atoms
+           :let [open (get-in @state/dev-state [:state-tree name :open])]]
        [:div {:key name}
         [:strong name]
         [tree
          open
          (fn [ks open?]
-           (swap! state-tree update-in [name :open] toggle ks open?))
+           (swap! state/dev-state update-in [:state-tree name :open] toggle ks open?))
          @state-atom
          []]]))])
 
 (defn register-state-atom [atom-name state-atom]
-  (swap! state-tree assoc-in [atom-name :state-atom] state-atom))
+  (swap! state-atoms assoc atom-name state-atom))
