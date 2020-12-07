@@ -35,7 +35,7 @@
 
 (defn- tree [open open-fn v ks]
   (if (coll? v)
-    [:ul
+    [:ul.reagent-dev-tools__ul
      (for [[k v] (if (map? v)
                    v
                    (zipmap (range) v))
