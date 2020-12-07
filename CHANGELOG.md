@@ -1,3 +1,9 @@
+# Unreleased
+
+- Add option to toggle panel placement between bottom and right
+- Add `:margin-element` option to automatically set margin-bottom/right on some
+element, so that panel doesn't go over the application content
+
 # 0.2.1 (2020-03-06)
 
 - Use `reagent.dom/render` instead of `reagent.core/render` to prepare for
