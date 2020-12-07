@@ -17,7 +17,7 @@
                (reduce (fn [listeners k]
                          (let [f (fn [e]
                                    ;; Need to retrieve latest callback in case the props have been updated
-                                   (let [f (get (r/props this) k)]
+                                   (when-let [f (get (r/props this) k)]
                                      (f e)))]
                            (.addEventListener el (->event-type k) f)
                            (assoc listeners k f)))

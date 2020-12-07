@@ -1,5 +1,6 @@
 (ns reagent-dev-tools.core
-  (:require [reagent.dom :as rdom]
+  (:require [reagent.core :as r]
+            [reagent.dom :as rdom]
             [reagent-dev-tools.styles :as s]
             [reagent-dev-tools.state-tree :as state-tree]
             [reagent-dev-tools.state :as state]
@@ -18,7 +19,7 @@
 (defn dev-tool
   [{:keys [panels]
     :or {panels default-panels}}]
-  (let [mouse-state (atom nil)]
+  (let [mouse-state (r/atom nil)]
     (fn [{:keys [panels margin-element]
           :or {panels default-panels}}]
       (when margin-element
@@ -34,20 +35,21 @@
                current-panel   (or (get panels current-k) (:state-tree panels))
                current-content (:fn current-panel)]
            [window-event-listener
-            {:on-mouse-move (fn [e]
-                              (when @mouse-state
+            {:on-mouse-move (when @mouse-state
+                              (fn [e]
                                 (.preventDefault e)
                                 (swap! dev-state (fn [v]
                                                    (case (:place @dev-state)
                                                      :right  (assoc v :width (-> (- (.-innerWidth js/window) (.-clientX e))
-                                                                                  (max 50)
-                                                                                  (min 1000)))
+                                                                                 (max 50)
+                                                                                 (min 1000)))
                                                      ;; Bottom
                                                      (assoc v :height (-> (- (.-innerHeight js/window) (.-clientY e))
                                                                           (max 50)
                                                                           (min 1000))))))))
-             :on-mouse-up (fn [_e]
-                            (reset! mouse-state nil))}
+             :on-mouse-up (when @mouse-state
+                            (fn [_e]
+                              (reset! mouse-state nil)))}
             [:div.reagent-dev-tools__panel
              {:style (case (:place @dev-state)
                       :right  {:width (str (:width @dev-state) "px")
