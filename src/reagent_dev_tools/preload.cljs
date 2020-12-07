@@ -1,7 +1,6 @@
 (ns reagent-dev-tools.preload
   (:require-macros [reagent-dev-tools.preload :refer [read-config]])
-  (:require [reagent-dev-tools.core :as core]
-            [reagent-dev-tools.state-tree :as state-tree]))
+  (:require [reagent-dev-tools.core :as core]))
 
 ;; Wait until JS is loaded, because config will refer to namespaces
 ;; that will be loaded after this preload ns.
