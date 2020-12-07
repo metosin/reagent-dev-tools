@@ -1,5 +1,7 @@
 # Unreleased
 
+[compare](https://github.com/metosin/reagent-dev-tools/compare/0.2.1...master)
+
 - Add option to toggle panel placement between bottom and right
 - Add `:margin-element` option to automatically set margin-bottom/right on some
 element, so that panel doesn't go over the application content
