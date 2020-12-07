@@ -139,17 +139,16 @@
 }
 
 .reagent-dev-tools__bottom-icon, .reagent-dev-tools__right-icon {
+  box-sizing: border-box;
   width: 24px;
   height: 24px;
   border: 1px solid #888;
 }
 
 .reagent-dev-tools__bottom-icon {
-  height: 12px;
   border-bottom-width: 12px;
 }
 
 .reagent-dev-tools__right-icon {
-  width: 12px;
   border-right-width: 12px;
 }
