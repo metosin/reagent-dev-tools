@@ -7,7 +7,6 @@
   background: #fff;
   text-align: left;
   display: flex;
-  flex-direction: column;
 }
 
 .reagent-dev-tools__table {
@@ -59,6 +58,7 @@
   background: #fff;
 }
 .reagent-dev-tools__nav-li-a--close-button {
+  padding: 0 10px;
   margin-left: 10px;
   background: #fff;
 }
@@ -112,6 +112,8 @@
 .reagent-dev-tools__panel-content {
   padding: 10px;
   overflow-y: auto;
+  overflow-x: auto;
+  flex: 1 0 auto;
 }
 
 .reagent-dev-tools__sizer {
@@ -151,4 +153,27 @@
 
 .reagent-dev-tools__right-icon {
   border-right-width: 12px;
+}
+
+.reagent-dev-tools__close-icon {
+  width: 24px;
+  height: 24px;
+  position: relative;
+}
+
+.reagent-dev-tools__close-icon::before, .reagent-dev-tools__close-icon::after {
+  position: absolute;
+  left: 12px;
+  content: ' ';
+  height: 24px;
+  width: 2px;
+  background-color: #888;
+}
+
+.reagent-dev-tools__close-icon::before {
+  transform: rotate(45deg);
+}
+
+.reagent-dev-tools__close-icon::after {
+  transform: rotate(-45deg);
 }

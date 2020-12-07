@@ -42,7 +42,7 @@
                                   (swap! dev-state (fn [v]
                                                      (case place
                                                        :right  (assoc v :width (-> (- (.-innerWidth js/window) (.-clientX e))
-                                                                                   (max 50)
+                                                                                   (max 250)
                                                                                    (min 1000)))
                                                        ;; Bottom
                                                        (assoc v :height (-> (- (.-innerHeight js/window) (.-clientY e))
@@ -74,7 +74,10 @@
                                   (reset! mouse-state true)
                                   (.preventDefault e))}]
                [:div
-                {:style {:flex "1 0 auto"}}
+                {:style {:display "flex"
+                         :flex-direction "column"
+                         :flex "1 0 auto"
+                         :width "100%"}}
                 [:div.reagent-dev-tools__nav
                  (for [[k {:keys [label]}] panels]
                    [:div.reagent-dev-tools__nav-li
@@ -92,7 +95,7 @@
                   [:div.reagent-dev-tools__right-icon]]
                  [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__nav-li-a--close-button
                   {:on-click #(swap! dev-state assoc :open? false)}
-                  [:span "×"]]]
+                  [:div.reagent-dev-tools__close-icon]]]
                 [:div.reagent-dev-tools__panel-content
                  (when current-content [current-content])]]]])
            [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__toggle-btn
