@@ -22,83 +22,84 @@
   (let [mouse-state (r/atom nil)]
     (fn [{:keys [panels margin-element]
           :or {panels default-panels}}]
-      (when margin-element
-        (set! (.. margin-element -style -marginRight) (when (and (:open? @dev-state) (= :right (:place @dev-state)))
-                                                        (str (:width @dev-state) "px")))
+      (let [{:keys [open? place width height]} @dev-state]
+        (when margin-element
+          (set! (.. margin-element -style -marginRight) (when (and open? (= :right place))
+                                                          (str width "px")))
 
-        (set! (.. margin-element -style -marginBottom) (when (and (:open? @dev-state) (= :bottom (:place @dev-state)))
-                                                         (str (:height @dev-state) "px"))))
-      [:<>
-       [:style (s/main-css)]
-       (if (:open? @dev-state)
-         (let [current-k       (:current @dev-state :state-tree)
-               current-panel   (or (get panels current-k) (:state-tree panels))
-               current-content (:fn current-panel)]
-           [window-event-listener
-            {:on-mouse-move (when @mouse-state
-                              (fn [e]
-                                (.preventDefault e)
-                                (swap! dev-state (fn [v]
-                                                   (case (:place @dev-state)
-                                                     :right  (assoc v :width (-> (- (.-innerWidth js/window) (.-clientX e))
-                                                                                 (max 50)
-                                                                                 (min 1000)))
-                                                     ;; Bottom
-                                                     (assoc v :height (-> (- (.-innerHeight js/window) (.-clientY e))
-                                                                          (max 50)
-                                                                          (min 1000))))))))
-             :on-mouse-up (when @mouse-state
-                            (fn [_e]
-                              (reset! mouse-state nil)))}
-            [:div.reagent-dev-tools__panel
-             {:style (case (:place @dev-state)
-                      :right  {:width (str (:width @dev-state) "px")
-                               :top 0
-                               :right 0
-                               :height "100%"
-                               :flex-direction "row"}
-                      ;; bottom
-                      {:height (str (:height @dev-state) "px")
-                       :width "100%"
-                       :bottom 0
-                       :flex-direction "column"})}
-             [:div.reagent-dev-tools__sizer
-              {:style  (case (:place @dev-state)
-                         :right  {:width "5px"
-                                  :cursor "ew-resize"}
+          (set! (.. margin-element -style -marginBottom) (when (and open? (= :bottom place))
+                                                           (str height "px"))))
+        [:<>
+         [:style (s/main-css)]
+         (if open?
+           (let [current-k       (:current @dev-state :state-tree)
+                 current-panel   (or (get panels current-k) (:state-tree panels))
+                 current-content (:fn current-panel)]
+             [window-event-listener
+              {:on-mouse-move (when @mouse-state
+                                (fn [e]
+                                  (.preventDefault e)
+                                  (swap! dev-state (fn [v]
+                                                     (case place
+                                                       :right  (assoc v :width (-> (- (.-innerWidth js/window) (.-clientX e))
+                                                                                   (max 50)
+                                                                                   (min 1000)))
+                                                       ;; Bottom
+                                                       (assoc v :height (-> (- (.-innerHeight js/window) (.-clientY e))
+                                                                            (max 50)
+                                                                            (min 1000))))))))
+               :on-mouse-up (when @mouse-state
+                              (fn [_e]
+                                (reset! mouse-state nil)))}
+              [:div.reagent-dev-tools__panel
+               {:style (case place
+                         :right  {:width (str width "px")
+                                  :top 0
+                                  :right 0
+                                  :height "100%"
+                                  :flex-direction "row"}
                          ;; bottom
-                         {:height "5px"
-                          :cursor "ns-resize"})
-               :on-mouse-down (fn [e]
-                                (reset! mouse-state true)
-                                (.preventDefault e))}]
-             [:div
-              {:style {:flex "1 0 auto"}}
-              [:div.reagent-dev-tools__nav
-               (for [[k {:keys [label]}] panels]
-                 [:div.reagent-dev-tools__nav-li
-                  {:key (name k)}
-                  [:a.reagent-dev-tools__nav-li-a
-                   {:class (when (keyword-identical? current-k k) "reagent-dev-tools__nav-li-a--active")
-                    :on-click #(swap! dev-state assoc :current k)}
-                   label]])
-               [:div.reagent-dev-tools__spacer]
-               [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__nav-li-a--option-button
-                {:on-click #(swap! dev-state assoc :place :bottom)}
-                [:div.reagent-dev-tools__bottom-icon]]
-               [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__nav-li-a--option-button
-                {:on-click #(swap! dev-state assoc :place :right)}
-               [:div.reagent-dev-tools__right-icon]]
-              [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__nav-li-a--close-button
-               {:on-click #(swap! dev-state assoc :open? false)}
-               [:span "×"]]]
-             [:div.reagent-dev-tools__panel-content
-              (when current-content [current-content])]]]])
-         [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__toggle-btn
-          {:on-click (fn [_]
-                       (swap! dev-state assoc :open? true)
-                       nil)}
-          "dev"])])))
+                         {:height (str height "px")
+                          :width "100%"
+                          :bottom 0
+                          :flex-direction "column"})}
+               [:div.reagent-dev-tools__sizer
+                {:style  (case place
+                           :right  {:width "5px"
+                                    :cursor "ew-resize"}
+                           ;; bottom
+                           {:height "5px"
+                            :cursor "ns-resize"})
+                 :on-mouse-down (fn [e]
+                                  (reset! mouse-state true)
+                                  (.preventDefault e))}]
+               [:div
+                {:style {:flex "1 0 auto"}}
+                [:div.reagent-dev-tools__nav
+                 (for [[k {:keys [label]}] panels]
+                   [:div.reagent-dev-tools__nav-li
+                    {:key (name k)}
+                    [:a.reagent-dev-tools__nav-li-a
+                     {:class (when (keyword-identical? current-k k) "reagent-dev-tools__nav-li-a--active")
+                      :on-click #(swap! dev-state assoc :current k)}
+                     label]])
+                 [:div.reagent-dev-tools__spacer]
+                 [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__nav-li-a--option-button
+                  {:on-click #(swap! dev-state assoc :place :bottom)}
+                  [:div.reagent-dev-tools__bottom-icon]]
+                 [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__nav-li-a--option-button
+                  {:on-click #(swap! dev-state assoc :place :right)}
+                  [:div.reagent-dev-tools__right-icon]]
+                 [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__nav-li-a--close-button
+                  {:on-click #(swap! dev-state assoc :open? false)}
+                  [:span "×"]]]
+                [:div.reagent-dev-tools__panel-content
+                 (when current-content [current-content])]]]])
+           [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__toggle-btn
+            {:on-click (fn [_]
+                         (swap! dev-state assoc :open? true)
+                         nil)}
+            "dev"])]))))
 
 (defn start!
   "Start Reagent dev tool.
