@@ -12,7 +12,8 @@
                     :nil nil
                     :foo {:bar "bar"
                           :items [{:id "1" :name "a"}
-                                  {:id "2" :name "b"}]}}))
+                                  {:id "2" :name "b"}]
+                          "items" {:string-key 1}}}))
 
 (def users (r/atom [{:id "1" :name "a"}
                     {:id "2" :name "b"}]))

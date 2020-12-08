@@ -11,12 +11,18 @@
     (assoc-in v ks nil)))
 
 (defn- key->string [k]
-  (if (keyword? k)
+  (cond
+    (keyword? k)
     (let [s (namespace k)
           n (name k)]
       (str ":" (if s
                  (str s "/" n)
                  n)))
+
+    (string? k)
+    (str \" k \")
+
+    :else
     k))
 
 (defn type->class [v]
