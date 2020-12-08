@@ -49,7 +49,11 @@
                   (doseq [[k _] (if (map? v)
                                   v
                                   (zipmap (range) v))]
-                    (open-fn (conj ks k) open-all?))))}
+                    (open-fn (conj ks k) open-all?))))
+    :on-mouse-down (fn [e]
+                     ;; Disable text select after double click
+                     (when (> (.-detail e) 1)
+                       (.preventDefault e)))}
    (collection-desc v)])
 
 (defn- tree [open open-fn v ks]
