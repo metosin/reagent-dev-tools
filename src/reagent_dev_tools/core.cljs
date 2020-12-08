@@ -115,7 +115,10 @@
   but is nil, dev tool is not enabled. If not given, new div is created and
   used.
 
-  :state-atom (optional) The Reagent atom to add to state-tree panel with \"App state\" name.
+  :state-atom (optional) The Reagent atom to add to state-tree panel. Additional atoms
+  can be registered with register-state-atom function.
+
+  :state-atom-name (optional) Name for state atom, defaults to \"App state\".
 
   :panels-fn (optional) Function which returns map of additional panels to display.
 
@@ -130,7 +133,9 @@
                         el)))]
 
     (when (:state-atom opts)
-      (state-tree/register-state-atom "App state" (:state-atom opts)))
+      (state-tree/register-state-atom
+        (:state-atom-name opts "App state")
+        (:state-atom opts)))
 
     (rdom/render
       [dev-tool {:margin-element (:margin-element opts)
