@@ -34,10 +34,10 @@
 
 (defn collection-name [v]
   (cond
-    (map? v) "{}"
-    (vector? v) "[]"
-    (set? v) "#{}"
-    (list? v) "()") )
+    (map? v) (str "{" (count v) " keys}")
+    (vector? v) (str "[" (count v) " items]")
+    (set? v) (str "#{" (count v) " items}")
+    (list? v) (str "(" (count v) " items)")) )
 
 (defn- tree [open open-fn v ks]
   (if (coll? v)
