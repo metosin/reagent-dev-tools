@@ -2,7 +2,9 @@
   (:require [devcards.core :as dc :refer-macros [defcard defcard-rg deftest]]
             [reagent.core :as r]
             [reagent-dev-tools.core :as dev-tools]
-            [reagent-dev-tools.state-tree :as dev-state]))
+            [reagent-dev-tools.state-tree :as dev-state]
+
+            [reagent-dev-tools.state :as rdt-state]))
 
 (def state (r/atom {:hello "world"
                     :fn-test (fn foo-name [])
@@ -19,6 +21,7 @@
                     {:id "2" :name "b"}]))
 
 (dev-state/register-state-atom "Users" users)
+(dev-state/register-state-atom "Dev tools state" rdt-state/dev-state)
 
 (defcard-rg foo
   [:h1 "hello"])

@@ -32,12 +32,25 @@
     (number? v) "reagent-dev-tools__number"
     (nil? v) "reagent-dev-tools__nil"))
 
-(defn collection-name [v]
+(defn collection-desc [v]
   (cond
     (map? v) (str "{" (count v) " keys}")
     (vector? v) (str "[" (count v) " items]")
     (set? v) (str "#{" (count v) " items}")
     (list? v) (str "(" (count v) " items)")) )
+
+(defn- toggle-item [open open-fn v ks]
+  [:span.reagent-dev-tools__li-toggle.reagent-dev-tools__li-toggle--active.reagent-dev-tools__pre
+   {:title "Toggle collection items"
+    :on-click (fn [_]
+                ;; if one is closed, open all
+                ;; else close all
+                (let [open-all? (some nil? (vals open))]
+                  (doseq [[k _] (if (map? v)
+                                  v
+                                  (zipmap (range) v))]
+                    (open-fn (conj ks k) open-all?))))}
+   (collection-desc v)])
 
 (defn- tree [open open-fn v ks]
   (if (coll? v)
@@ -52,9 +65,9 @@
         [:span.reagent-dev-tools__li-toggle
          {:on-click #(open-fn ks false)
           :title "Toggle this collection"
-          :class (if (coll? v)
+          :class (when (coll? v)
                    "reagent-dev-tools__li-toggle--active")}
-         (if (coll? v)
+         (when (coll? v)
            [:span.reagent-dev-tools__li-toggle-icon
             (if open "-" "+")])
          [:strong
@@ -62,19 +75,9 @@
           (key->string k)]
 
          " "]
-        (if (coll? v)
-          [:span.reagent-dev-tools__li-toggle.reagent-dev-tools__li-toggle--active.reagent-dev-tools__pre
-           {:title "Toggle collection items"
-            :on-click (fn [_]
-                        ;; if one is closed, open all
-                        ;; else close all
-                        (let [open-all? (some nil? (vals open))]
-                          (doseq [[k _] (if (map? v)
-                                          v
-                                          (zipmap (range) v))]
-                            (open-fn (conj ks k) open-all?))))}
-           (collection-name v)])
-        (if (or (not (coll? v)) open)
+        (when (coll? v)
+          [toggle-item open open-fn v ks])
+        (when (or (not (coll? v)) open)
           [tree open open-fn v ks])])]
 
     [:pre.reagent-dev-tools__pre
@@ -85,13 +88,17 @@
   [:div
    (doall
      (for [[name state-atom] @state-atoms
-           :let [open (get-in @state/dev-state [:state-tree name :open])]]
+           :let [open (get-in @state/dev-state [:state-tree name :open])
+                 open-fn (fn [ks open?]
+                           (swap! state/dev-state update-in [:state-tree name :open] toggle ks open?))]]
        [:div {:key name}
-        [:strong name]
+        [:strong
+         name
+         (let [v @state-atom]
+           [toggle-item open open-fn v []])]
         [tree
          open
-         (fn [ks open?]
-           (swap! state/dev-state update-in [:state-tree name :open] toggle ks open?))
+         open-fn
          @state-atom
          []]]))])
 
