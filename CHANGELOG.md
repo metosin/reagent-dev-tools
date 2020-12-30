@@ -1,4 +1,6 @@
-# Unreleased
+# 0.3.1 (2020-12-30)
+
+[compare](https://github.com/metosin/reagent-dev-tools/compare/0.3.0...0.3.1)
 
 - Added toggle collection to state atoms
 - Add `:state-atom-name` option to customize name for state atom added using `start!`

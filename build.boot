@@ -16,7 +16,7 @@
   '[adzerk.boot-reload    :refer [reload]]
   '[metosin.boot-alt-http :refer [serve]])
 
-(def +version+ "0.3.0")
+(def +version+ "0.3.1")
 
 (task-options!
   pom {:project 'metosin/reagent-dev-tools
