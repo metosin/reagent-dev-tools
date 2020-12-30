@@ -15,7 +15,10 @@
                     :foo {:bar "bar"
                           :items [{:id "1" :name "a"}
                                   {:id "2" :name "b"}]
-                          "items" {:string-key 1}}}))
+                          "items" {:string-key 1}
+                          nil {:nil-key 2}
+                          [1 2 :foo] {:vector-key 3}
+                          (js/Symbol "symbol") {:js-symbol-key 4}}}))
 
 (def users (r/atom [{:id "1" :name "a"}
                     {:id "2" :name "b"}]))

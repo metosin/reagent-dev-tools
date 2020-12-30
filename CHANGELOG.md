@@ -2,6 +2,8 @@
 
 - Added toggle collection to state atoms
 - Add `:state-atom-name` option to customize name for state atom added using `start!`
+- Ensure `nil`, vectors and other things as map keys in the state tree
+  are rendered.
 
 # 0.3.0 (2020-12-07)
 

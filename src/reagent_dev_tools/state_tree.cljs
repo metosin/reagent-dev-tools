@@ -10,21 +10,6 @@
     (assoc-in v ks {})
     (assoc-in v ks nil)))
 
-(defn- key->string [k]
-  (cond
-    (keyword? k)
-    (let [s (namespace k)
-          n (name k)]
-      (str ":" (if s
-                 (str s "/" n)
-                 n)))
-
-    (string? k)
-    (str \" k \")
-
-    :else
-    k))
-
 (defn type->class [v]
   (cond
     (keyword? v) "reagent-dev-tools__keyword"
@@ -65,7 +50,7 @@
            :let [open (get open k)
                  ks (conj ks k)]]
        [:li.reagent-dev-tools__li
-        {:key (key->string k)}
+        {:key (pr-str k)}
         [:span.reagent-dev-tools__li-toggle
          {:on-click #(open-fn ks false)
           :title "Toggle this collection"
@@ -76,7 +61,7 @@
             (if open "-" "+")])
          [:strong
           {:class (type->class k)}
-          (key->string k)]
+          (pr-str k)]
 
          " "]
         (when (coll? v)

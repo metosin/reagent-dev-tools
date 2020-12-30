@@ -1,13 +1,9 @@
 (set-env!
   :source-paths #{"example-src/cljs" "example-src/html"}
   :resource-paths #{"src"}
-  :dependencies '[[org.clojure/clojure    "1.9.0"      :scope "provided"]
-                  [org.clojure/clojurescript "1.9.946" :scope "provided"]
+  :dependencies '[[org.clojure/clojure    "1.10.0"      :scope "provided"]
+                  [org.clojure/clojurescript "1.10.764" :scope "provided"]
                   [adzerk/boot-cljs       "2.1.4"  :scope "test"]
-                  [adzerk/boot-cljs-repl  "0.3.3"      :scope "test"]
-                  [com.cemerick/piggieback "0.2.2"     :scope "test"]
-                  [weasel                  "0.7.0"     :scope "test"]
-                  [org.clojure/tools.nrepl "0.2.13"    :scope "test"]
                   [adzerk/boot-reload     "0.5.2"     :scope "test"]
                   [devcards               "0.2.4" :scope "test"
                    :exclusions [cljsjs/react cljsjs/react-dom]]
@@ -15,12 +11,10 @@
 
                   ;; No need to depend on Reagent, it is presumed
                   ;; the application provides it.
-                  [reagent "0.9.1" :scope "provided"]
-                  [metosin/komponentit "0.3.9"]])
+                  [reagent "1.0.0" :scope "provided"]])
 
 (require
   '[adzerk.boot-cljs      :refer [cljs]]
-  '[adzerk.boot-cljs-repl :refer [cljs-repl start-repl repl-env]]
   '[adzerk.boot-reload    :refer [reload]]
   '[metosin.boot-alt-http :refer [serve]])
 
@@ -38,7 +32,7 @@
     (watch)
     (reload :on-jsload 'example.main/restart!
             :asset-path "public")
-    (cljs-repl)
+    (repl :server true)
     (cljs)
     (serve :port 3002)))
 
