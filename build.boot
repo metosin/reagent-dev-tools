@@ -1,12 +1,10 @@
 (set-env!
   :source-paths #{"example-src/cljs" "example-src/html"}
   :resource-paths #{"src"}
-  :dependencies '[[org.clojure/clojure    "1.10.0"      :scope "provided"]
+  :dependencies '[[org.clojure/clojure "1.10.1" :scope "provided"]
                   [org.clojure/clojurescript "1.10.764" :scope "provided"]
-                  [adzerk/boot-cljs       "2.1.4"  :scope "test"]
-                  [adzerk/boot-reload     "0.5.2"     :scope "test"]
-                  [devcards               "0.2.4" :scope "test"
-                   :exclusions [cljsjs/react cljsjs/react-dom]]
+                  [adzerk/boot-cljs "2.1.5" :scope "test"]
+                  [adzerk/boot-reload "0.6.0" :scope "test"]
                   [metosin/boot-alt-http "0.2.0" :scope "test"]
 
                   ;; No need to depend on Reagent, it is presumed
