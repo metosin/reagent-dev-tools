@@ -1,6 +1,6 @@
 # 0.4.0 (2021-01-12)
 
-[compare](https://github.com/metosin/reagent-dev-tools/compare/0.3.0...0.3.1)
+[compare](https://github.com/metosin/reagent-dev-tools/compare/0.3.1...0.4.0)
 
 - Add way to control collection description text for custom types,
 like Linked:
