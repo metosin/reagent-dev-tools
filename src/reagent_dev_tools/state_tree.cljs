@@ -17,17 +17,46 @@
     (number? v) "reagent-dev-tools__number"
     (nil? v) "reagent-dev-tools__nil"))
 
+(defn collection-info-handler
+  "- type-name is for tooltip
+  - start is opening parenthesis and maybe type-name for custom types
+  - count
+  - end is description for count, e.g. items and end parenthesis"
+  [type-name start count end]
+  [:span
+   {:title type-name}
+   (str start
+        count
+        end)])
+
+(def ^:private collection-info
+  (atom {PersistentHashMap #(collection-info-handler "PersistentHashMap" "{" (count %) " keys}")
+         PersistentArrayMap #(collection-info-handler "PersistentArrayMap" "{" (count %) " keys}")
+         PersistentHashSet #(collection-info-handler "PersistentHashSet" "#{" (count %) " items}")
+         PersistentVector #(collection-info-handler "PersistentVector" "[" (count %) " items]")
+         Cons #(collection-info-handler "Cons" "(" (count %) " items)")
+         List #(collection-info-handler "List" "(" (count %) " items)")
+         EmptyList #(collection-info-handler "EmptyList" "(" (count %) " items)")}))
+
+(defn register-collection-info-handler [type handler]
+  (swap! collection-info assoc type handler))
+
 (defn collection-desc [v]
-  (cond
-    (map? v) (str "{" (count v) " keys}")
-    (vector? v) (str "[" (count v) " items]")
-    (set? v) (str "#{" (count v) " items}")
-    (list? v) (str "(" (count v) " items)")) )
+  (let [t (type v)]
+    (if-let [f (get @collection-info t)]
+      (f v)
+      ;; Basic handling for custom types implementing IMap etc, but without
+      ;; type-name tooltip other info.
+      (cond
+        (map? v) (str "{" (count v) " keys}")
+        (vector? v) (str "[" (count v) " items]")
+        (set? v) (str "#{" (count v) " items}")
+        (list? v) (str "(" (count v) " items)")
+        :else (str "unknown type: " (type->str t))))))
 
 (defn- toggle-item [open open-fn v ks]
   [:span.reagent-dev-tools__li-toggle.reagent-dev-tools__li-toggle--active.reagent-dev-tools__pre
-   {:title "Toggle collection items"
-    :on-click (fn [_]
+   {:on-click (fn [_]
                 ;; if one is closed, open all
                 ;; else close all
                 (let [open-all? (some nil? (vals open))]

@@ -2,4 +2,6 @@
                     :asset-path "main.out"
                     :preloads [reagent-dev-tools.preload]
                     :external-config {:reagent-dev-tools {:state-atom example.main/state
-                                                          :panels-fn example.main/dev-panels}}}}
+                                                          :panels-fn example.main/dev-panels}}
+                    ; :optimizations :advanced
+                    }}

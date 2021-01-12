@@ -9,14 +9,16 @@
 
                   ;; No need to depend on Reagent, it is presumed
                   ;; the application provides it.
-                  [reagent "1.0.0" :scope "provided"]])
+                  [reagent "1.0.0" :scope "provided"]
+
+                  [frankiesardo/linked "1.3.0" :scope "test"]])
 
 (require
   '[adzerk.boot-cljs      :refer [cljs]]
   '[adzerk.boot-reload    :refer [reload]]
   '[metosin.boot-alt-http :refer [serve]])
 
-(def +version+ "0.3.1")
+(def +version+ "0.4.0")
 
 (task-options!
   pom {:project 'metosin/reagent-dev-tools
