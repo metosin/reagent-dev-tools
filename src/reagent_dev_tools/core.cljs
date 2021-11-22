@@ -106,23 +106,23 @@
                          nil)}
             "dev"])]))))
 
+;; NOTE: sync the option changes to README.
 (defn start!
-  "Start Reagent dev tool.
+"Start Reagent dev tool.
 
-  Options:
+Options:
 
-  :el (optional) The element to render the dev-tool into. If the property is given,
-  but is nil, dev tool is not enabled. If not given, new div is created and
-  used.
-
-  :state-atom (optional) The Reagent atom to add to state-tree panel. Additional atoms
-  can be registered with register-state-atom function.
-
-  :state-atom-name (optional) Name for state atom, defaults to \"App state\".
-
-  :panels-fn (optional) Function which returns map of additional panels to display.
-
-  :margin-element (optional) Element where to set margin-bottom/right if the panel is open."
+- `:el` (optional) The element to render the dev-tool into. If the property is given,
+but is nil, dev tool is not enabled. If not given, new div is created and
+used.
+- `:state-atom` (optional) The Reagent atom to add to state-tree panel. Additional atoms
+can be registered with `register-state-atom` function.
+- `:state-atom-name` (optional) Name for state atom, defaults to \"App state\".
+- `:panels-fn` (optional) Function which returns map of additional panels to display.
+You can use these to extend dev panel with your own application specific tool.
+- `:margin-element` (optional) Element where to set margin-bottom/right if the panel is open.
+This is helpful so that the dev tool isn't displayed over the application content.
+"
   [opts]
   (when-let [el (if (contains? opts :el)
                   (:el opts)
