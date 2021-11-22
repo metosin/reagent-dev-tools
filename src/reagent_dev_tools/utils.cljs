@@ -36,5 +36,5 @@
        :component-did-update (fn [this] (update-listeners js/window listeners (r/props this) this))
        :component-will-unmount (fn [this] (update-listeners js/window listeners {} this))
        :reagent-render
-       (fn [props child]
+       (fn [_props child]
          child)})))

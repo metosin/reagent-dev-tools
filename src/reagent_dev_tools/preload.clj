@@ -2,5 +2,5 @@
   (:require [cljs.env]))
 
 (defmacro read-config []
-  (if cljs.env/*compiler*
+  (when cljs.env/*compiler*
     (get-in @cljs.env/*compiler* [:options :external-config :reagent-dev-tools])))

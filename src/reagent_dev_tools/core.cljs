@@ -17,6 +17,7 @@
 (def dev-state state/dev-state)
 
 (defn dev-tool
+  #_:clj-kondo/ignore
   [{:keys [panels]
     :or {panels default-panels}}]
   (let [mouse-state (r/atom nil)]
