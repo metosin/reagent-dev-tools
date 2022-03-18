@@ -1,6 +1,6 @@
 # 0.4.1 (2022-03-18)
 
-[compare](https://github.com/metosin/reagent-dev-tools/compare/0.3.1...0.4.0)
+[compare](https://github.com/metosin/reagent-dev-tools/compare/0.4.0...0.4.1)
 
 - Ensure text color, font-style and font-weight are reset inside the panel
 
