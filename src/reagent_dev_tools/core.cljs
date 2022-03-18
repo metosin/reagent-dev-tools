@@ -63,6 +63,7 @@
                          {:height (str height "px")
                           :width "100%"
                           :bottom 0
+                          :left 0
                           :flex-direction "column"})}
                [:div.reagent-dev-tools__sizer
                 {:style  (case place
