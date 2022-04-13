@@ -4,8 +4,7 @@
 
 ## Features
 
-- Display state tree from Reagent atoms
-  - Supports multiple atoms
+- Display state tree for Reagent atoms
 - Styles embedded for easy use
 - Simple toggleable development tool panel which can be extended with own tabs
 
@@ -14,15 +13,24 @@
 ### Options
 
 - `:el` (optional) The element to render the dev-tool into. If the property is given,
-but is nil, dev tool is not enabled. If not given, new div is created and
-used.
-- `:state-atom` (optional) The Reagent atom to add to state-tree panel. Additional atoms
-can be registered with `register-state-atom` function.
-- `:state-atom-name` (optional) Name for state atom, defaults to \"App state\".
-- `:panels-fn` (optional) Function which returns map of additional panels to display.
-You can use these to extend dev panel with your own application specific tool.
+but is nil, dev tool is not enabled. If not given, new div is created and used.
 - `:margin-element` (optional) Element where to set margin-bottom/right if the panel is open.
 This is helpful so that the dev tool isn't displayed over the application content.
+- `:state-atom` This options adds default `state-tree` panel displaying tree for the given RAtom.
+- `:state-atom-name` (optional) Overrides the name for default `state-tree` panel.
+- `:panels` List of panel maps to display. This is appended to the default panels, if you
+don't want to include default panels, leave out :state-atom option and define all panels here.
+
+#### Panel options:
+- `:key` (Required) React key
+- `:label` (Required) Label for tab bar
+- `:view` (Required) Reagent Hiccup form to display the panel content
+
+#### Built-in panel component options:
+
+- `reagent-dev-tools.core/state-tree`
+    - `:ratom` (Required) The RAtom to display
+    - `:label` (Optional) Label to display for atom root node, will default to panel :label.
 
 ### 1. :preload namespace
 
@@ -34,7 +42,7 @@ To configure tool in this setup, you can use `:external-config :reagent-dev-tool
 
 ```edn
 :external-config {:reagent-dev-tools {:state-atom example.main/state
-                                      :panels-fn example.main/dev-panels}}}}
+                                      :panels example.main/panels}}}}
 ```
 
 ### 2. Start manually based on compile time options
@@ -101,8 +109,15 @@ browser location or `localStorage`.
 Reagent component `reagent-dev-tools.core/dev-tool` can also be used directly
 as part of Reagent applications.
 
+## Extending
+
+### Panels
+
+The panels components can access the panel options map through React context
+defined in `reagent-dev-tools/context`. Check state-tree implementation.
+
 ## License
 
-Copyright © 2015-2021 [Metosin Oy](http://www.metosin.fi)
+Copyright © 2015-2022 [Metosin Oy](http://www.metosin.fi)
 
 Distributed under the Eclipse Public License, the same as Clojure.

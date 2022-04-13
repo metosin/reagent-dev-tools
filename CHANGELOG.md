@@ -1,7 +1,15 @@
-# Unreleased
+# 1.0.0 (Unreleased)
 
 [compare](https://github.com/metosin/reagent-dev-tools/compare/0.4.2...0.4.3)
 
+- **Breaking**:
+    - Removed `register-state-atom`
+    - Removed `:panels-fn` option
+    - Requires Reagent 1.0.0+
+- **New**:
+    - New `:panels` option
+    - State-tree component is now accessible through the core namespace:
+    `reagent-dev-tools.core/state-tree`
 - Add `max-width: 100vw` to prevent vertical panel being wider than screen width
 
 # 0.4.2 (2022-03-18)

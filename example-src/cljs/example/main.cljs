@@ -27,21 +27,35 @@
 (def users (r/atom [{:id "1" :name "a"}
                     {:id "2" :name "b"}]))
 
-(dev-state/register-state-atom "Users" users)
-(dev-state/register-state-atom "Dev tools state" rdt-state/dev-state)
-
 (dev-state/register-collection-info-handler lm/LinkedMap #(dev-state/collection-info-handler "LinkedMap" "{LinkedMap, " (count %) " keys}"))
 
-(defn dev-panels []
-  {:example {:label "Example panel"
-             :fn (fn []
-                   [:div [:h1 "Hello"]])}})
+(defn example-panel
+  [text]
+  [:div
+   [:h1 "Hello " text]])
+
+(def dev-panels
+  [{:key :users
+    :label "Users"
+    :view [dev-tools/state-tree
+           {:label "example.main/users"
+            :ratom users}]}
+   {:key :dev-tools
+    :label "Dev tools state"
+    :view [dev-tools/state-tree
+           {:ratom rdt-state/dev-state}]}
+   {:key :example1
+    :label "Example panel"
+    :view [example-panel "foo"]}])
 
 (defn main []
   [:h1 "hello"] )
 
 (defn restart! []
   (r-dom/render [main] (.getElementById js/document "app"))
-  (dev-tools/start! {:margin-element js/document.body}))
+  (dev-tools/start! {:margin-element js/document.body
+                     :state-atom state
+                     :state-atom-name "App state"
+                     :panels dev-panels}))
 
 (restart!)

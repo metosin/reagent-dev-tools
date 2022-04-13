@@ -1,8 +1,7 @@
 (ns reagent-dev-tools.state-tree
-  (:require [reagent.core :as r]
-            [reagent-dev-tools.state :as state]))
-
-(defonce state-atoms (r/atom {}))
+  (:require ["react" :as react]
+            [reagent-dev-tools.state :as state]
+            [reagent-dev-tools.context :as ctx]))
 
 (defn- toggle [v ks open?]
   (if (or (not (get-in v ks))
@@ -19,9 +18,9 @@
 
 (defn collection-info-handler
   "- type-name is for tooltip
-  - start is opening parenthesis and maybe type-name for custom types
+  - start is the opening parenthesis and maybe type-name for custom types
   - count
-  - end is description for count, e.g. items and end parenthesis"
+  - end is description for count name, e.g. 'items' and the end parenthesis"
   [type-name start count end]
   [:span
    {:title type-name}
@@ -102,23 +101,23 @@
      {:class (type->class v)}
      (pr-str v)]))
 
-(defn state-tree-panel []
+(defn state-tree-panel' [{:keys [label ratom]}]
   [:div
-   (doall
-     (for [[name state-atom] @state-atoms
-           :let [open (get-in @state/dev-state [:state-tree name :open])
-                 open-fn (fn [ks open?]
-                           (swap! state/dev-state update-in [:state-tree name :open] toggle ks open?))]]
-       [:div {:key name}
-        [:strong
-         name
-         (let [v @state-atom]
-           [toggle-item open open-fn v []])]
-        [tree
-         open
-         open-fn
-         @state-atom
-         []]]))])
+   (let [panel-opts (react/useContext ctx/panel-context)
+         k (:key panel-opts)
+         open (get-in @state/dev-state [:state-tree k :open])
+         open-fn (fn [ks open?] (swap! state/dev-state update-in [:state-tree k :open] toggle ks open?))
+         ratom-v @ratom]
+     [:div
+      [:strong
+       (or label
+           (:label panel-opts))
+       [toggle-item open open-fn ratom-v []]]
+      [tree
+       open
+       open-fn
+       ratom-v
+       []]])])
 
-(defn register-state-atom [atom-name state-atom]
-  (swap! state-atoms assoc atom-name state-atom))
+(defn state-tree-panel [opts]
+  [:f> state-tree-panel' opts])

@@ -12,6 +12,7 @@
                    (catch :default _
                      nil)))))
 
+;; Save the state (open, height, active panel) to local storage
 (add-watch dev-state :local-storage
            (fn [_ _ _old v]
              (.setItem js/localStorage storage-key (pr-str (dissoc v :mouse)))))

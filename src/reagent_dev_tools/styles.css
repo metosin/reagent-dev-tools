@@ -26,15 +26,25 @@
 }
 
 .reagent-dev-tools__nav {
-  padding: 5px 0 0 10px;
+  padding: 0 0 0 10px;
   margin: 0;
   border-bottom: 1px solid #ccc;
   display: flex;
+  flex-direction: row;
+  align-items: center;
   background: #eee;
   flex: 0 0 auto;
 }
 
+.reagent-dev-tools__nav-panels {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 0%;
+  flex-wrap: wrap;
+}
+
 .reagent-dev-tools__nav-li {
+  margin-top: 5px;
   margin-bottom: -1px;
   margin-right: 10px;
 }
@@ -64,13 +74,19 @@
 }
 
 .reagent-dev-tools__nav-li-a--option-button {
-  padding: 0 10px;
+  /* Nav text are 20 + 20 + 2 = 42px high. Icons are 24px, so padding should fill rest. */
+  padding: 8px 10px;
+  margin-top: 5px;
   margin-left: 1px;
+  margin-bottom: -1px;
   background: #fff;
 }
+
 .reagent-dev-tools__nav-li-a--close-button {
-  padding: 0 10px;
+  padding: 8px 10px;
+  margin-top: 5px;
   margin-left: 10px;
+  margin-bottom: -1px;
   background: #fff;
 }
 

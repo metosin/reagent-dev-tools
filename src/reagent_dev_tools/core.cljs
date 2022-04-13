@@ -4,26 +4,35 @@
             [reagent-dev-tools.styles :as s]
             [reagent-dev-tools.state-tree :as state-tree]
             [reagent-dev-tools.state :as state]
-            [reagent-dev-tools.utils :refer [window-event-listener]]))
-
-;; Save the state (open, height, active panel) to local storage
+            [reagent-dev-tools.utils :refer [window-event-listener]]
+            [reagent-dev-tools.context :as ctx]))
 
 (def element-id (str ::dev-panel))
 
-(def default-panels
-  {:state-tree {:label "State"
-                :fn state-tree/state-tree-panel}})
+(def state-tree state-tree/state-tree-panel)
 
-(def dev-state state/dev-state)
+(defn create-default-panels [options]
+  (if (:state-atom options)
+    [{:key ::default
+      :label (:state-atom-name options "State")
+      :view [state-tree
+             {:k :state-atom
+              :ratom (:state-atom options)}]}]
+    (if (nil? (:panels options))
+      [{:key ::default
+        :label (:state-atom-name options "State")
+        :view [:div [:p "Configure either `:state-atom` or `:panels`."]]}]
+      [])))
 
 (defn dev-tool
   #_:clj-kondo/ignore
   [{:keys [panels]
-    :or {panels default-panels}}]
+    :as options}]
   (let [mouse-state (r/atom nil)]
-    (fn [{:keys [panels margin-element]
-          :or {panels default-panels}}]
-      (let [{:keys [open? place width height]} @dev-state]
+    (fn [{:keys [panels margin-element]}]
+      (let [{:keys [open? place width height]} @state/dev-state
+
+            id->panel (into {} (map (juxt :key identity) panels))]
         (when margin-element
           (set! (.. margin-element -style -marginRight) (when (and open? (= :right place))
                                                           (str width "px")))
@@ -33,22 +42,23 @@
         [:<>
          [:style (s/main-css)]
          (if open?
-           (let [current-k       (:current @dev-state :state-tree)
-                 current-panel   (or (get panels current-k) (:state-tree panels))
-                 current-content (:fn current-panel)]
+           (let [current-k       (:current @state/dev-state ::default)
+                 current-panel   (or (get id->panel current-k)
+                                     (::default id->panel))]
              [window-event-listener
               {:on-mouse-move (when @mouse-state
                                 (fn [e]
                                   (.preventDefault e)
-                                  (swap! dev-state (fn [v]
-                                                     (case place
-                                                       :right  (assoc v :width (-> (- (.-innerWidth js/window) (.-clientX e))
-                                                                                   (max 250)
-                                                                                   (min 1000)))
-                                                       ;; Bottom
-                                                       (assoc v :height (-> (- (.-innerHeight js/window) (.-clientY e))
-                                                                            (max 50)
-                                                                            (min 1000))))))))
+                                  (swap! state/dev-state
+                                         (fn [v]
+                                           (case place
+                                             :right  (assoc v :width (-> (- (.-innerWidth js/window) (.-clientX e))
+                                                                         (max 250)
+                                                                         (min 1000)))
+                                             ;; Bottom
+                                             (assoc v :height (-> (- (.-innerHeight js/window) (.-clientY e))
+                                                                  (max 50)
+                                                                  (min 1000))))))))
                :on-mouse-up (when @mouse-state
                               (fn [_e]
                                 (reset! mouse-state nil)))}
@@ -82,50 +92,76 @@
                          :width "100%"
                          :height "100%"}}
                 [:div.reagent-dev-tools__nav
-                 (for [[k {:keys [label]}] panels]
-                   [:div.reagent-dev-tools__nav-li
-                    {:key (name k)}
-                    [:a.reagent-dev-tools__nav-li-a
-                     {:class (when (keyword-identical? current-k k) "reagent-dev-tools__nav-li-a--active")
-                      :on-click #(swap! dev-state assoc :current k)}
-                     label]])
-                 [:div.reagent-dev-tools__spacer]
-                 [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__nav-li-a--option-button
-                  {:on-click #(swap! dev-state assoc :place :bottom)}
-                  [:div.reagent-dev-tools__bottom-icon]]
-                 [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__nav-li-a--option-button
-                  {:on-click #(swap! dev-state assoc :place :right)}
-                  [:div.reagent-dev-tools__right-icon]]
+                 [:div.reagent-dev-tools__nav-panels
+                  (for [panel panels]
+                    [:div.reagent-dev-tools__nav-li
+                     {:key (name (:key panel))}
+                     [:a.reagent-dev-tools__nav-li-a
+                      {:class (when (keyword-identical? current-k (:key panel)) "reagent-dev-tools__nav-li-a--active")
+                       :on-click #(swap! state/dev-state assoc :current (:key panel))}
+                      (:label panel)]])]
+
+                 ;; Just diplay the button to toggle to the other state.
+                 (if (= :right place)
+                   [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__nav-li-a--option-button
+                    {:on-click #(swap! state/dev-state assoc :place :bottom)}
+                    [:div.reagent-dev-tools__bottom-icon]]
+                   [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__nav-li-a--option-button
+                    {:on-click #(swap! state/dev-state assoc :place :right)}
+                    [:div.reagent-dev-tools__right-icon]])
+
                  [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__nav-li-a--close-button
-                  {:on-click #(swap! dev-state assoc :open? false)}
+                  {:on-click #(swap! state/dev-state assoc :open? false)}
                   [:div.reagent-dev-tools__close-icon]]]
+
+                ;; Allow the panel component to access panel-options through React context
+                ;; E.g. to access the panel :key or :label
                 [:div.reagent-dev-tools__panel-content
-                 (when current-content
-                   [current-content])]]]])
+                 [:r> ctx/panel-context-provider
+                  #js {:value current-panel}
+                  (:view current-panel)]]]]])
            [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__toggle-btn
             {:on-click (fn [_]
-                         (swap! dev-state assoc :open? true)
+                         (swap! state/dev-state assoc :open? true)
                          nil)}
             "dev"])]))))
 
+(def ^:private panels-fn-warning
+  (delay (js/console.warn "Reagent dev tools option `:panels-fn` is deprecated. Use `:panels` instead.")))
+
 ;; NOTE: sync the option changes to README.
 (defn start!
-"Start Reagent dev tool.
+  "Start Reagent dev tool.
 
-Options:
+  Options:
 
-- `:el` (optional) The element to render the dev-tool into. If the property is given,
-but is nil, dev tool is not enabled. If not given, new div is created and
-used.
-- `:state-atom` (optional) The Reagent atom to add to state-tree panel. Additional atoms
-can be registered with `register-state-atom` function.
-- `:state-atom-name` (optional) Name for state atom, defaults to \"App state\".
-- `:panels-fn` (optional) Function which returns map of additional panels to display.
-You can use these to extend dev panel with your own application specific tool.
-- `:margin-element` (optional) Element where to set margin-bottom/right if the panel is open.
-This is helpful so that the dev tool isn't displayed over the application content.
-"
+  - `:el` (optional) The element to render the dev-tool into. If the property is given,
+  but is nil, dev tool is not enabled. If not given, new div is created and used.
+  - `:margin-element` (optional) Element where to set margin-bottom/right if the panel is open.
+  This is helpful so that the dev tool isn't displayed over the application content.
+  - `:state-atom` This options adds default `state-tree` panel displaying tree for the given RAtom.
+  - `:state-atom-name` (optional) Overrides the name for default `state-tree` panel.
+  - `:panels` List of panel maps to display. This is appended to the default panels, if you
+  don't want to include default panels, leave out :state-atom option and define all panels here.
+
+  Panel options:
+  - `:key` (Required) React key
+  - `:label` (Required) Label for tab bar
+  - `:view` (Required) Reagent Hiccup form to display the panel content
+
+  Built-in panel component options:
+
+  - `reagent-dev-tools.core/state-tree`
+      - `:ratom` (Required) The RAtom to display
+      - `:label` (Optional) Label to display for atom root node, will default to panel :label."
   [opts]
+  (when (:panels-fn opts)
+    @panels-fn-warning)
+
+  (doseq [panel (:panels opts)]
+    (assert (:key panel) "Panel :key is required")
+    (assert (vector? (:view panel)) "Panel :view is required and must an vector"))
+
   (when-let [el (if (contains? opts :el)
                   (:el opts)
                   (or (.getElementById js/document element-id)
@@ -134,19 +170,8 @@ This is helpful so that the dev tool isn't displayed over the application conten
                         (.appendChild (.-body js/document) el)
                         el)))]
 
-    (when (:state-atom opts)
-      (state-tree/register-state-atom
-        (:state-atom-name opts "App state")
-        (:state-atom opts)))
-
     (rdom/render
       [dev-tool {:margin-element (:margin-element opts)
-                 :panels (merge default-panels
-                                (when (:panels-fn opts)
-                                  ((:panels-fn opts))))}]
+                 :panels (into (create-default-panels opts)
+                               (:panels opts))}]
       el)))
-
-(defn register-state-atom
-  "Add Reagent atom to the state panel with given name"
-  [atom-name state-atom]
-  (state-tree/register-state-atom atom-name state-atom))
