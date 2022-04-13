@@ -2,14 +2,20 @@
 
 [compare](https://github.com/metosin/reagent-dev-tools/compare/0.4.2...0.4.3)
 
-- **Breaking**:
-    - Removed `register-state-atom`
-    - Removed `:panels-fn` option
-    - Requires Reagent 1.0.0+
 - **New**:
+    - If `:state-atom` value isn't given, no default panel is added if `:panels`
+    is defined. If neither is provided, help text is displayed.
     - New `:panels` option
+        - Panels are now defined as a vector, so they keep their order.
+        - Panels are appended to default panels.
     - State-tree component is now accessible through the core namespace:
     `reagent-dev-tools.core/state-tree`
+- **Breaking**:
+    - Removed `register-state-atom`
+        - Use `:panels` with additional `state-tree` components instead.
+    - Removed `:panels-fn` option
+        - Use new `:panels` list, which is just a vector instead of map returning map.
+    - Requires Reagent 1.0.0+
 - Add `max-width: 100vw` to prevent vertical panel being wider than screen width
 
 # 0.4.2 (2022-03-18)
