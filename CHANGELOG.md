@@ -19,6 +19,7 @@
         - Use new `:panels` list, which is just a vector instead of map returning map.
     - Requires Reagent 1.0.0+
 - Add `max-width: 100vw` to prevent vertical panel being wider than screen width
+- Navigation bar panel list now wraps to multiple lines if it doesn't fit on one line
 
 # 0.4.2 (2022-03-18)
 
