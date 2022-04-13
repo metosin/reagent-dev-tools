@@ -45,6 +45,7 @@
     :label "Dev tools state"
     :view [dev-tools/state-tree
            {:ratom rdt-state/dev-state}]}
+   nil
    {:key :example1
     :label "Example panel"
     :view [example-panel "foo"]}])

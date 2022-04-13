@@ -34,6 +34,7 @@
     (fn [{:keys [panels margin-element]}]
       (let [{:keys [open? place width height]} @state/dev-state
 
+            panels (keep identity panels)
             id->panel (into {} (map (juxt :key identity) panels))]
         (when margin-element
           (set! (.. margin-element -style -marginRight) (when (and open? (= :right place))
@@ -160,7 +161,8 @@
   (when (:panels-fn opts)
     @panels-fn-warning)
 
-  (doseq [panel (:panels opts)]
+  (doseq [panel (:panels opts)
+          :when (some? panel)]
     (assert (:key panel) "Panel :key is required")
     (assert (vector? (:view panel)) "Panel :view is required and must an vector"))
 
