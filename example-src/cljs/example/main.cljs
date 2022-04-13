@@ -2,7 +2,6 @@
   (:require [reagent.core :as r]
             [reagent.dom :as r-dom]
             [reagent-dev-tools.core :as dev-tools]
-            [reagent-dev-tools.state-tree :as dev-state]
             [reagent-dev-tools.state :as rdt-state]
             [linked.map :as lm]
             [linked.core :as l]))
@@ -27,7 +26,7 @@
 (def users (r/atom [{:id "1" :name "a"}
                     {:id "2" :name "b"}]))
 
-(dev-state/register-collection-info-handler lm/LinkedMap #(dev-state/collection-info-handler "LinkedMap" "{LinkedMap, " (count %) " keys}"))
+(dev-tools/register-collection-info-handler lm/LinkedMap #(dev-tools/collection-info-handler "LinkedMap" "{LinkedMap, " (count %) " keys}"))
 
 (defn example-panel
   [text]

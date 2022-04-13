@@ -8,8 +8,10 @@
     - New `:panels` option
         - Panels are now defined as a vector, so they keep their order.
         - Panels are appended to default panels.
-    - State-tree component is now accessible through the core namespace:
-    `reagent-dev-tools.core/state-tree`
+    - State-tree component and functions is now accessible through the core namespace:
+        - `reagent-dev-tools.core/state-tree`
+        - `reagent-dev-tools.core/register-collection-info-handler`
+        - `reagent-dev-tools.core/collection-info-handler`
 - **Breaking**:
     - Removed `register-state-atom`
         - Use `:panels` with additional `state-tree` components instead.

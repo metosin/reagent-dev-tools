@@ -111,6 +111,17 @@ as part of Reagent applications.
 
 ## Extending
 
+### Custom type handling
+
+Custom handlers can be registered to better display if custom collection type
+is displayed, so it can be differentiated from regular vectors and maps:
+
+```
+(dev-tools/register-collection-info-handler
+  lm/LinkedMap
+  #(dev-tools/collection-info-handler "LinkedMap" "{LinkedMap, " (count %) " keys}"))
+```
+
 ### Panels
 
 The panels components can access the panel options map through React context

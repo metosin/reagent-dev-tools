@@ -10,6 +10,8 @@
 (def element-id (str ::dev-panel))
 
 (def state-tree state-tree/state-tree-panel)
+(def collection-info-handler state-tree/collection-info-handler)
+(def register-collection-info-handler state-tree/register-collection-info-handler)
 
 (defn create-default-panels [options]
   (if (:state-atom options)
