@@ -26,7 +26,9 @@
 (def users (r/atom [{:id "1" :name "a"}
                     {:id "2" :name "b"}]))
 
-(dev-tools/register-collection-info-handler lm/LinkedMap #(dev-tools/collection-info-handler "LinkedMap" "{LinkedMap, " (count %) " keys}"))
+(dev-tools/register-collection-info-handler!
+  lm/LinkedMap
+  #(dev-tools/collection-info-handler "LinkedMap" "{LinkedMap, " (count %) " keys}"))
 
 (defn example-panel
   [text]

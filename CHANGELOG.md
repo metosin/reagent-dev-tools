@@ -1,6 +1,6 @@
 # 1.0.0 (Unreleased)
 
-[compare](https://github.com/metosin/reagent-dev-tools/compare/0.4.2...0.4.3)
+[compare](https://github.com/metosin/reagent-dev-tools/compare/0.4.2...1.0.0)
 
 - **New**:
     - If `:state-atom` value isn't given, no default panel is added if `:panels`
@@ -10,7 +10,7 @@
         - Panels are appended to default panels.
     - State-tree component and functions is now accessible through the core namespace:
         - `reagent-dev-tools.core/state-tree`
-        - `reagent-dev-tools.core/register-collection-info-handler`
+        - `reagent-dev-tools.core/register-collection-info-handler!`
         - `reagent-dev-tools.core/collection-info-handler`
 - **Breaking**:
     - Removed `register-state-atom`
