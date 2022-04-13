@@ -1,6 +1,12 @@
+# Unreleased
+
+[compare](https://github.com/metosin/reagent-dev-tools/compare/0.4.2...0.4.3)
+
+- Add `max-width: 100vw` to prevent vertical panel being wider than screen width
+
 # 0.4.2 (2022-03-18)
 
-[compare](https://github.com/metosin/reagent-dev-tools/compare/0.4.0...0.4.1)
+[compare](https://github.com/metosin/reagent-dev-tools/compare/0.4.1...0.4.2)
 
 - Reset `font: inherit` rule from tailwind
 - Reset `line-height`
