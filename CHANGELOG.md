@@ -1,4 +1,4 @@
-# 1.0.0 (Unreleased)
+# 1.0.0 (2022-04-22)
 
 [compare](https://github.com/metosin/reagent-dev-tools/compare/0.4.2...1.0.0)
 
