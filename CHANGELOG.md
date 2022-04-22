@@ -1,6 +1,29 @@
+# 1.0.0 (Unreleased)
+
+[compare](https://github.com/metosin/reagent-dev-tools/compare/0.4.2...1.0.0)
+
+- **New**:
+    - If `:state-atom` value isn't given, no default panel is added if `:panels`
+    is defined. If neither is provided, help text is displayed.
+    - New `:panels` option
+        - Panels are now defined as a vector, so they keep their order.
+        - Panels are appended to default panels.
+    - State-tree component and functions is now accessible through the core namespace:
+        - `reagent-dev-tools.core/state-tree`
+        - `reagent-dev-tools.core/register-collection-info-handler!`
+        - `reagent-dev-tools.core/collection-info-handler`
+- **Breaking**:
+    - Removed `register-state-atom`
+        - Use `:panels` with additional `state-tree` components instead.
+    - Removed `:panels-fn` option
+        - Use new `:panels` list, which is just a vector instead of map returning map.
+    - Requires Reagent 1.0.0+
+- Add `max-width: 100vw` to prevent vertical panel being wider than screen width
+- Navigation bar panel list now wraps to multiple lines if it doesn't fit on one line
+
 # 0.4.2 (2022-03-18)
 
-[compare](https://github.com/metosin/reagent-dev-tools/compare/0.4.0...0.4.1)
+[compare](https://github.com/metosin/reagent-dev-tools/compare/0.4.1...0.4.2)
 
 - Reset `font: inherit` rule from tailwind
 - Reset `line-height`

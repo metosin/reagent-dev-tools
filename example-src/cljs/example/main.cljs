@@ -2,7 +2,6 @@
   (:require [reagent.core :as r]
             [reagent.dom :as r-dom]
             [reagent-dev-tools.core :as dev-tools]
-            [reagent-dev-tools.state-tree :as dev-state]
             [reagent-dev-tools.state :as rdt-state]
             [linked.map :as lm]
             [linked.core :as l]))
@@ -24,24 +23,47 @@
            :linked-map (l/map :foo 1
                               :bar 2)}))
 
+(defonce update-numbers
+  (js/setInterval (fn []
+                    (swap! state assoc :number (rand-int 9001))
+                    (swap! state assoc-in [:foo :bar] (str "bar" (rand-int 9001))))
+                  500))
+
 (def users (r/atom [{:id "1" :name "a"}
                     {:id "2" :name "b"}]))
 
-(dev-state/register-state-atom "Users" users)
-(dev-state/register-state-atom "Dev tools state" rdt-state/dev-state)
+(dev-tools/register-collection-info-handler!
+  lm/LinkedMap
+  #(dev-tools/collection-info-handler "LinkedMap" "{LinkedMap, " (count %) " keys}"))
 
-(dev-state/register-collection-info-handler lm/LinkedMap #(dev-state/collection-info-handler "LinkedMap" "{LinkedMap, " (count %) " keys}"))
+(defn example-panel
+  [text]
+  [:div
+   [:h1 "Hello " text]])
 
-(defn dev-panels []
-  {:example {:label "Example panel"
-             :fn (fn []
-                   [:div [:h1 "Hello"]])}})
+(def dev-panels
+  [{:key :users
+    :label "Users"
+    :view [dev-tools/state-tree
+           {:label "example.main/users"
+            :ratom users}]}
+   {:key :dev-tools
+    :label "Dev tools state"
+    :view [dev-tools/state-tree
+           {:ratom rdt-state/dev-state}]}
+   nil
+   {:key :example1
+    :label "Example panel"
+    :view [example-panel "foo"]}])
 
 (defn main []
   [:h1 "hello"] )
 
 (defn restart! []
   (r-dom/render [main] (.getElementById js/document "app"))
-  (dev-tools/start! {:margin-element js/document.body}))
+  (dev-tools/start! {:margin-element js/document.body
+                     :state-atom state
+                     :state-atom-name "App state"
+                     :panels dev-panels}))
 
 (restart!)

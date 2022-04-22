@@ -1,7 +1,7 @@
 {:compiler-options {:main example.main
                     :asset-path "main.out"
-                    :preloads [reagent-dev-tools.preload]
-                    :external-config {:reagent-dev-tools {:state-atom example.main/state
-                                                          :panels-fn example.main/dev-panels}}
+                    ; :preloads [reagent-dev-tools.preload]
+                    ; :external-config {:reagent-dev-tools {:state-atom example.main/state
+                    ;                                       :panels-fn example.main/dev-panels}}
                     ; :optimizations :advanced
                     }}

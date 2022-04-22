@@ -2,19 +2,25 @@
   font: revert;
 }
 
-.reagent-dev-tools__panel {
+
+.reagent-dev-tools__panel, .reagent-dev-tools__toggle-btn  {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, Roboto, 'Helvetica Neue', sans-serif;
   font-size: 16px;
   line-height: 1.2;
   font-style: normal;
   font-weight: normal;
   color: #000;
+}
 
+.reagent-dev-tools__panel {
   z-index: 2000;
   position: fixed;
   background: #fff;
   text-align: left;
   display: flex;
+
+  /* Prevent vertical panel being wider than the screen width */
+  max-width: 100vw;
 }
 
 .reagent-dev-tools__table {
@@ -23,15 +29,25 @@
 }
 
 .reagent-dev-tools__nav {
-  padding: 5px 0 0 10px;
+  padding: 0 0 0 10px;
   margin: 0;
   border-bottom: 1px solid #ccc;
   display: flex;
+  flex-direction: row;
+  align-items: center;
   background: #eee;
   flex: 0 0 auto;
 }
 
+.reagent-dev-tools__nav-panels {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 0%;
+  flex-wrap: wrap;
+}
+
 .reagent-dev-tools__nav-li {
+  margin-top: 5px;
   margin-bottom: -1px;
   margin-right: 10px;
 }
@@ -61,13 +77,19 @@
 }
 
 .reagent-dev-tools__nav-li-a--option-button {
-  padding: 0 10px;
+  /* Nav text are 20 + 20 + 2 = 42px high. Icons are 24px, so padding should fill rest. */
+  padding: 8px 10px;
+  margin-top: 5px;
   margin-left: 1px;
+  margin-bottom: -1px;
   background: #fff;
 }
+
 .reagent-dev-tools__nav-li-a--close-button {
-  padding: 0 10px;
+  padding: 8px 10px;
+  margin-top: 5px;
   margin-left: 10px;
+  margin-bottom: -1px;
   background: #fff;
 }
 
