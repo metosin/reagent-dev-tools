@@ -1,5 +1,6 @@
 (ns reagent-dev-tools.state-tree
   (:require ["react" :as react]
+            [reagent.core :as r]
             [reagent-dev-tools.state :as state]
             [reagent-dev-tools.context :as ctx]))
 
@@ -101,10 +102,9 @@
      {:class (type->class v)}
      (pr-str v)]))
 
-(defn state-tree-panel' [{:keys [label ratom]}]
+(defn state-tree-panel' [{:keys [label ratom]} panel-opts]
   [:div
-   (let [panel-opts (react/useContext ctx/panel-context)
-         k (:key panel-opts)
+   (let [k (:key panel-opts)
          open (get-in @state/dev-state [:state-tree k :open])
          open-fn (fn [ks open?] (swap! state/dev-state update-in [:state-tree k :open] toggle ks open?))
          ratom-v @ratom]
@@ -120,4 +120,6 @@
        []]])])
 
 (defn state-tree-panel [opts]
-  [:f> state-tree-panel' opts])
+  [:> ctx/panel-context-consumer
+   (fn [v]
+     (r/as-element [state-tree-panel' opts v]))])

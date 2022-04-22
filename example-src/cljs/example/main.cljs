@@ -23,6 +23,12 @@
            :linked-map (l/map :foo 1
                               :bar 2)}))
 
+(defonce update-numbers
+  (js/setInterval (fn []
+                    (swap! state assoc :number (rand-int 9001))
+                    (swap! state assoc-in [:foo :bar] (str "bar" (rand-int 9001))))
+                  500))
+
 (def users (r/atom [{:id "1" :name "a"}
                     {:id "2" :name "b"}]))
 
