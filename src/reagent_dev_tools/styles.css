@@ -2,14 +2,17 @@
   font: revert;
 }
 
-.reagent-dev-tools__panel {
+
+.reagent-dev-tools__panel, .reagent-dev-tools__toggle-btn  {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, Roboto, 'Helvetica Neue', sans-serif;
   font-size: 16px;
   line-height: 1.2;
   font-style: normal;
   font-weight: normal;
   color: #000;
+}
 
+.reagent-dev-tools__panel {
   z-index: 2000;
   position: fixed;
   background: #fff;
