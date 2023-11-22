@@ -1,3 +1,11 @@
+# 1.0.1 (2023-11-22)
+
+[compare](https://github.com/metosin/reagent-dev-tools/compare/1.0.0...1.0.1)
+
+- Remove `font: revert` rule and set `font-weight` for certain elements so that
+  Tailwind reset doesn't break it.
+  This allows users to use their styles (like MUI) within their own panels.
+
 # 1.0.0 (2022-04-22)
 
 [compare](https://github.com/metosin/reagent-dev-tools/compare/0.4.2...1.0.0)

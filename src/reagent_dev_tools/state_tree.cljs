@@ -88,7 +88,7 @@
          (when (coll? v)
            [:span.reagent-dev-tools__li-toggle-icon
             (if open "-" "+")])
-         [:strong
+         [:span.reagent-dev-tools__strong
           {:class (type->class k)}
           (pr-str k)]
 
@@ -109,7 +109,7 @@
          open-fn (fn [ks open?] (swap! state/dev-state update-in [:state-tree k :open] toggle ks open?))
          ratom-v @ratom]
      [:div
-      [:strong
+      [:span.reagent-dev-tools__strong
        (or label
            (:label panel-opts))
        [toggle-item open open-fn ratom-v []]]
