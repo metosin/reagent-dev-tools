@@ -1,3 +1,9 @@
+# 1.0.2 (2024-04-19)
+
+[compare](https://github.com/metosin/reagent-dev-tools/compare/1.0.1...1.0.2)
+
+- Add `toggle-btn` option to replace the open button component
+
 # 1.0.1 (2023-11-22)
 
 [compare](https://github.com/metosin/reagent-dev-tools/compare/1.0.0...1.0.1)

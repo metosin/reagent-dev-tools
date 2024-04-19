@@ -26,12 +26,18 @@
         :view [:div [:p "Configure either `:state-atom` or `:panels`."]]}]
       [])))
 
+(defn default-toggle-btn [open-fn]
+  [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__toggle-btn
+   {:on-click open-fn}
+   "dev"])
+
 (defn dev-tool
   #_:clj-kondo/ignore
   [{:keys [panels]
     :as options}]
   (let [mouse-state (r/atom nil)]
-    (fn [{:keys [panels margin-element]}]
+    (fn [{:keys [panels margin-element toggle-btn]
+          :or {toggle-btn default-toggle-btn}}]
       (let [{:keys [open? place width height]} @state/dev-state
 
             panels (keep identity panels)
@@ -123,11 +129,10 @@
                  [:r> ctx/panel-context-provider
                   #js {:value current-panel}
                   (:view current-panel)]]]]])
-           [:button.reagent-dev-tools__nav-li-a.reagent-dev-tools__toggle-btn
-            {:on-click (fn [_]
-                         (swap! state/dev-state assoc :open? true)
-                         nil)}
-            "dev"])]))))
+           [:f> toggle-btn
+            (fn [_]
+              (swap! state/dev-state assoc :open? true)
+              nil)])]))))
 
 (def ^:private panels-fn-warning
   (delay (js/console.warn "Reagent dev tools option `:panels-fn` is deprecated. Use `:panels` instead.")))
@@ -146,6 +151,8 @@
   - `:state-atom-name` (optional) Overrides the name for default `state-tree` panel.
   - `:panels` List of panel maps to display. This is appended to the default panels, if you
   don't want to include default panels, leave out :state-atom option and define all panels here.
+  - `:toggle-btn` (optional) Reagent component to render the open button. Takes `open-fn` as parameter.
+  Rendered as functional component so the component can also use hooks.
 
   Panel options:
   - `:key` (Required) React key
@@ -176,6 +183,7 @@
 
     (rdom/render
       [dev-tool {:margin-element (:margin-element opts)
+                 :toggle-btn (:toggle-btn opts)
                  :panels (into (create-default-panels opts)
                                (:panels opts))}]
       el)))
