@@ -1,3 +1,9 @@
+# 1.0.3 (2024-04-19)
+
+[compare](https://github.com/metosin/reagent-dev-tools/compare/1.0.2...1.0.3)
+
+- Fix `toggle-btn` option default
+
 # 1.0.2 (2024-04-19)
 
 [compare](https://github.com/metosin/reagent-dev-tools/compare/1.0.1...1.0.2)

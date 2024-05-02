@@ -20,7 +20,7 @@
   '[adzerk.boot-reload    :refer [reload]]
   '[metosin.boot-alt-http :refer [serve]])
 
-(def +version+ "1.0.2")
+(def +version+ "1.0.3")
 
 (task-options!
   pom {:project 'metosin/reagent-dev-tools
@@ -47,5 +47,5 @@
 (deftask deploy []
   (comp
     (build)
-    (push :gpg-sign (not (.endsWith +version+ "-SNAPSHOT"))
+    (push :gpg-sign false
           :repo "clojars")))
