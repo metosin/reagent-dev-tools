@@ -36,10 +36,10 @@
   [{:keys [panels]
     :as options}]
   (let [mouse-state (r/atom nil)]
-    (fn [{:keys [panels margin-element toggle-btn]
-          :or {toggle-btn default-toggle-btn}}]
+    (fn [{:keys [panels margin-element toggle-btn]}]
       (let [{:keys [open? place width height]} @state/dev-state
 
+            toggle-btn (or toggle-btn default-toggle-btn)
             panels (keep identity panels)
             id->panel (into {} (map (juxt :key identity) panels))]
         (when margin-element
