@@ -1,0 +1,14 @@
+{
+  "name": "reagent-dev-tools",
+  "scripts": {
+    "start": "npx shadow-cljs watch client"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "private": true,
+  "devDependencies": {
+    "shadow-cljs": "^2.28.10"
+  }
+}

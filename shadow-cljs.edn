@@ -1,0 +1,8 @@
+{:source-paths ["src" "example-src/cljs" "example-src/html"]
+ :dev-http {8090 {:roots ["target/shadow-cljs/client/public" "classpath:public"]}}
+ :builds {:client {:target :browser
+                   :output-dir "target/shadow-cljs/client/public"
+                   :asset-path "/js"
+                   :modules {:main {:entries [example.main]}}}}
+ :dependencies [[reagent "1.1.1"]
+                [frankiesardo/linked "1.3.0"]]}
