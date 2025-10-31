@@ -4,6 +4,9 @@
 
 ## Features
 
+- Compatibility
+  - Reagent 2 (and 1.3?)
+  - React 19 and 18
 - Display state tree for Reagent atoms
 - Styles embedded for easy use
 - Simple toggleable development tool panel which can be extended with own tabs
@@ -20,6 +23,8 @@ This is helpful so that the dev tool isn't displayed over the application conten
 - `:state-atom-name` (optional) Overrides the name for default `state-tree` panel.
 - `:panels` List of panel maps to display. This is appended to the default panels, if you
 don't want to include default panels, leave out :state-atom option and define all panels here.
+- `:toggle-btn` (optional) Reagent component to render the open button. Takes `open-fn` as parameter.
+Rendered as functional component so the component can also use hooks.
 
 #### Panel options:
 - `:key` (Required) React key
@@ -129,6 +134,6 @@ defined in `reagent-dev-tools/context`. Check state-tree implementation.
 
 ## License
 
-Copyright © 2015-2022 [Metosin Oy](http://www.metosin.fi)
+Copyright © 2015-2025 [Metosin Oy](http://www.metosin.fi)
 
 Distributed under the Eclipse Public License, the same as Clojure.
