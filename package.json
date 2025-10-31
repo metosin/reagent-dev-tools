@@ -4,8 +4,8 @@
     "start": "npx shadow-cljs watch client"
   },
   "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "private": true,
   "devDependencies": {

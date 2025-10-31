@@ -1,3 +1,12 @@
+# 1.1.0 (2025-10-31)
+
+[compare](https://github.com/metosin/reagent-dev-tools/compare/1.0.3...1.1.0)
+
+- Support for either React 19 or 18 using Reagent 2.0
+    - `reagent.dom` or `reagent.dom.client` is chosen based on if `react-dom/render`
+      is available. React 17 is not uspported because `react-dom/client` has to
+      exist.
+
 # 1.0.3 (2024-04-19)
 
 [compare](https://github.com/metosin/reagent-dev-tools/compare/1.0.2...1.0.3)

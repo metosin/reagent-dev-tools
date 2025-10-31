@@ -1,6 +1,8 @@
 (ns reagent-dev-tools.core
-  (:require [reagent.core :as r]
+  (:require ["react-dom" :as react-dom]
+            [reagent.core :as r]
             [reagent.dom :as rdom]
+            [reagent.dom.client :as rdomc]
             [reagent-dev-tools.styles :as s]
             [reagent-dev-tools.state-tree :as state-tree]
             [reagent-dev-tools.state :as state]
@@ -137,6 +139,12 @@
 (def ^:private panels-fn-warning
   (delay (js/console.warn "Reagent dev tools option `:panels-fn` is deprecated. Use `:panels` instead.")))
 
+;; Create one root per given element
+;; Avoids warnings on re-calling start! on the same element
+(defonce create-root
+  (memoize (fn [el]
+             (rdomc/create-root el))))
+
 ;; NOTE: sync the option changes to README.
 (defn start!
   "Start Reagent dev tool.
@@ -181,9 +189,10 @@
                         (.appendChild (.-body js/document) el)
                         el)))]
 
-    (rdom/render
-      [dev-tool {:margin-element (:margin-element opts)
-                 :toggle-btn (:toggle-btn opts)
-                 :panels (into (create-default-panels opts)
-                               (:panels opts))}]
-      el)))
+    (let [comp [dev-tool {:margin-element (:margin-element opts)
+                          :toggle-btn (:toggle-btn opts)
+                          :panels (into (create-default-panels opts)
+                                        (:panels opts))}]]
+      (if (exists? react-dom/render)
+        (rdom/render comp el)
+        (rdomc/render (create-root el) comp)))))

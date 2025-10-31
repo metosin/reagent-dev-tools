@@ -1,6 +1,8 @@
 (ns example.main
-  (:require [reagent.core :as r]
-            [reagent.dom :as r-dom]
+  (:require ["react" :as react]
+            [reagent.core :as r]
+            [reagent.dom :as rdom]
+            [reagent.dom.client :as rdomc]
             [reagent-dev-tools.core :as dev-tools]
             [reagent-dev-tools.state :as rdt-state]
             [linked.map :as lm]
@@ -39,7 +41,8 @@
 (defn example-panel
   [text]
   [:div
-   [:h1 "Hello " text]])
+   [:h1 "Hello " text]
+   [:p "React version: " react/version]])
 
 (def dev-panels
   [{:key :users
@@ -59,8 +62,13 @@
 (defn main []
   [:h1 "hello"] )
 
+(defonce el (.getElementById js/document "app"))
+(defonce root (delay (rdomc/create-root el)))
+
 (defn restart! []
-  (r-dom/render [main] (.getElementById js/document "app"))
+  (if (exists? react-dom/render)
+    (rdom/render [main] el)
+    (rdomc/render @root [main]))
   (dev-tools/start! {:margin-element js/document.body
                      :state-atom state
                      :state-atom-name "App state"
