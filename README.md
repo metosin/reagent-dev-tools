@@ -5,7 +5,7 @@
 ## Features
 
 - Compatibility
-  - Reagent 2 (and 1.3?)
+  - Reagent 2 and 1.3
   - React 19 and 18
 - Display state tree for Reagent atoms
 - Styles embedded for easy use
