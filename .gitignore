@@ -12,3 +12,6 @@ pom.xml.asc
 
 node_modules/
 .shadow-cljs/
+
+figwheel_server.log
+.rebel_readline_history
