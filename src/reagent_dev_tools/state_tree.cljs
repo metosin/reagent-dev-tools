@@ -70,11 +70,14 @@
                        (.preventDefault e)))}
    (collection-desc v)])
 
+(defn map-key-sort [kv]
+  (pr-str (key kv)))
+
 (defn- tree [open open-fn v ks]
   (if (coll? v)
     [:ul.reagent-dev-tools__ul
      (for [[k v] (if (map? v)
-                   v
+                   (sort-by map-key-sort v)
                    (zipmap (range) v))
            :let [open (get open k)
                  ks (conj ks k)]]
