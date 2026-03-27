@@ -22,6 +22,9 @@
                  nil {:nil-key 2}
                  [1 2 :foo] {:vector-key 3}
                  (js/Symbol "symbol") {:js-symbol-key 4}}
+           :map-with-many-props (into {} (concat (map (fn [x] [(str "foo" x) 1]) (range 20))
+                                                 (map (fn [x] [(keyword (str "foo" x)) 1]) (range 20))
+                                                 (map (fn [x] [(keyword "zz" (str "foo" x)) 1]) (range 20))))
            :linked-map (l/map :foo 1
                               :bar 2)}))
 
