@@ -1,3 +1,9 @@
+# 1.2.0 (2026-04-08)
+
+[compare](https://github.com/metosin/reagent-dev-tools/compare/1.1.0...1.2.0)
+
+- Sort map properties ([#8](https://github.com/metosin/reagent-dev-tools/issues/8))
+
 # 1.1.0 (2025-10-31)
 
 [compare](https://github.com/metosin/reagent-dev-tools/compare/1.0.3...1.1.0)
