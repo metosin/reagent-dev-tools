@@ -19,7 +19,7 @@ jobs:
       uses: actions/cache@v6
       with:
         path: ~/.m2/repository
-        key: ${{ runner.os }}-m2-${{ hashFiles('project.clj', 'shadow-cljs.edn') }}
+        key: ${{ runner.os }}-m2-${{ hashFiles('project.clj', 'shadow-cljs.edn', 'package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-m2-
     - name: Setup Java
@@ -33,7 +33,7 @@ jobs:
         # 2.13.x tags on the GitHub mirror have a stale bin/lein (2.12.1-SNAPSHOT)
         lein: 2.12.0
     - name: Setup Node.js
-      uses: actions/setup-node@v6
+      uses: actions/setup-node@v7
       with:
         node-version: 24
         cache: npm
