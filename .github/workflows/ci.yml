@@ -19,7 +19,7 @@ jobs:
       uses: actions/cache@v6
       with:
         path: ~/.m2/repository
-        key: ${{ runner.os }}-m2-${{ hashFiles('project.clj', 'shadow-cljs.edn', 'package-lock.json') }}
+        key: ${{ runner.os }}-m2-${{ hashFiles('project.clj', 'shadow-cljs.edn') }}
         restore-keys: |
           ${{ runner.os }}-m2-
     - name: Setup Java
