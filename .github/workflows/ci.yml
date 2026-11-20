@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v7
+    - name: Cache dependencies
+      uses: actions/cache@v6
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-m2-${{ hashFiles('project.clj', 'shadow-cljs.edn') }}
+        restore-keys: |
+          ${{ runner.os }}-m2-
+    - name: Setup Java
+      uses: actions/setup-java@v6
+      with:
+        distribution: zulu
+        java-version: 21
+    - name: Setup Clojure
+      uses: DeLaGuardo/setup-clojure@13.7.0
+      with:
+        # 2.13.x tags on the GitHub mirror have a stale bin/lein (2.12.1-SNAPSHOT)
+        lein: 2.12.0
+    - name: Setup Node.js
+      uses: actions/setup-node@v7
+      with:
+        node-version: 24
+        cache: npm
+    - name: Install node deps
+      run: npm ci
+    # The library has no tests: compiling the example app (which uses the
+    # library) with warnings as errors is the check.
+    - name: Build example
+      run: npx shadow-cljs release client --config-merge '{:compiler-options {:warnings-as-errors true}}'
+    - name: Build jar
+      run: lein jar
+
+  lint:
+    name: clj-kondo
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v7
+    - name: Setup clj-kondo
+      uses: DeLaGuardo/setup-clojure@13.7.0
+      with:
+        clj-kondo: 2026.10.26
+    - name: Lint
+      run: clj-kondo --lint src example-src/cljs
