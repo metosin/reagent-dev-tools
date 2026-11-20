@@ -1,6 +1,5 @@
 (ns reagent-dev-tools.state-tree
-  (:require ["react" :as react]
-            [reagent.core :as r]
+  (:require [reagent.core :as r]
             [reagent-dev-tools.state :as state]
             [reagent-dev-tools.context :as ctx]))
 
